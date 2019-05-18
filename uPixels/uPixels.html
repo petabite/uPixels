@@ -1,0 +1,58 @@
+<head>
+  <title>uPixels</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.js"></script>
+  <script src="http://materializecss.com/extras/noUiSlider/nouislider.js"></script>
+  <script src="uPixels.js"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.css">
+  <link href="http://materializecss.com/extras/noUiSlider/nouislider.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="uPixels.css">
+</head>
+
+<body>
+  <div class="navbar-fixed">
+    <nav class="teal lighten-1">
+      <div class="nav-wrapper">
+        <a class="brand-logo center">uPixels</a>
+      </div>
+    </nav>
+  </div>
+
+  <div class="controls row center-align">
+    <h5>Controls</h5>
+    <div class="colorpicker col s6">
+      <h6>Color Picker:</h6>
+      <input type="text" id="colorpicker">
+    </div>
+    <div class="brightness col s6">
+      <h6>Brightness:</h6>
+      <div id="brightness-slider"></div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12">
+      <ul class="tabs">
+        <li class="tab col s3"><a class="active" href="#test1">Test 1</a></li>
+        <li class="tab col s3"><a href="#test2">Test 2</a></li>
+        <li class="tab col s3"><a href="#test3">Disabled Tab</a></li>
+        <li class="tab col s3"><a href="#test4">Test 4</a></li>
+      </ul>
+    </div>
+    <div id="test1" class="col s12">Test 1</div>
+    <div id="test2" class="col s12">Test 2</div>
+    <div id="test3" class="col s12">Test 3</div>
+    <div id="test4" class="col s12">Test 4</div>
+  </div>
+
+  <div class="buttons center-align">
+    <a class="btn-floating btn-large waves-effect waves-light blue"><i class="material-icons">play_arrow</i></a>
+  </div>
+
+</body>

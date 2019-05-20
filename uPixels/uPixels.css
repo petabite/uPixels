@@ -1,3 +1,8 @@
+nav i {
+  font-size: 40px !important;
+  margin-right: 5px !important;
+}
+
 .sp-replacer {
   border-radius: 5px;
   margin: 8px auto;
@@ -13,6 +18,16 @@
   padding: 1px;
   height: 160px;
   border-radius: 10px;
+}
+
+.tabs i {
+  margin-right: 5px;
+  vertical-align: middle;
+  font-size: 20px;
+}
+
+.tabs .tab-title {
+  vertical-align: middle;
 }
 
 .slider {
@@ -36,4 +51,13 @@
 .collapsible-body .select-wrapper {
   width: 40px;
   margin: auto;
+}
+
+#about h2 {
+  text-align: center;
+}
+
+#about i, .title {
+  vertical-align: middle;
+  margin: 2px;
 }

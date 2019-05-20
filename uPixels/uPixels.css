@@ -1,7 +1,13 @@
 .sp-replacer {
   border-radius: 5px;
+  margin: 20px auto;
 }
-.noUi-handle-touch-area {
-  width: 90px;
-  height: 90px;
+.slider {
+  margin-top: 20px;
+}
+#custom div {
+    margin-bottom: 50px;
+}
+.tabs-content.carousel .carousel-item {
+  height: 500px !important;
 }

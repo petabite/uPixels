@@ -31,28 +31,79 @@
       <input type="text" id="colorpicker">
     </div>
     <div class="brightness col s6">
-      <h6>Brightness:</h6>
-      <div id="brightness-slider"></div>
+      <h6>Brightness: <span id="brightness-label">50</span></h6>
+      <div id="brightness-slider" class="slider"></div>
     </div>
   </div>
 
   <div class="row">
     <div class="col s12">
       <ul class="tabs">
-        <li class="tab col s3"><a class="active" href="#test1">Test 1</a></li>
-        <li class="tab col s3"><a href="#test2">Test 2</a></li>
-        <li class="tab col s3"><a href="#test3">Disabled Tab</a></li>
-        <li class="tab col s3"><a href="#test4">Test 4</a></li>
+        <li class="tab col s3"><a class="active" href="#animations">animations</a></li>
+        <li class="tab col s3"><a href="#custom">custom</a></li>
       </ul>
     </div>
-    <div id="test1" class="col s12">Test 1</div>
-    <div id="test2" class="col s12">Test 2</div>
-    <div id="test3" class="col s12">Test 3</div>
-    <div id="test4" class="col s12">Test 4</div>
+    <div id="animations" class="col s12">
+      <ul class="collapsible popout">
+        <li>
+          <div class="collapsible-header"><i class="material-icons">looks</i>Rainbow</div>
+          <div class="collapsible-body center-align">
+            <a class="waves-effect waves-light btn-floating valign-middle"><i class="material-icons">play_arrow</i></a>
+          </div>
+        </li>
+        <li>
+          <div class="collapsible-header"><i class="material-icons">hdr_strong</i>Alernating Colors</div>
+          <div class="collapsible-body center-align">
+            <h5>Select Second Color:</h5>
+            <input type="text" id="second-colorpicker"><br>
+            <a class="waves-effect waves-light btn-floating valign-middle"><i class="material-icons">play_arrow</i></a>
+          </div>
+        </li>
+        <li>
+          <div class="collapsible-header"><i class="material-icons">blur_on</i>Random Fill</div>
+          <div class="collapsible-body center-align">
+            <a class="waves-effect waves-light btn-floating valign-middle"><i class="material-icons">play_arrow</i></a>
+          </div>
+        </li>
+        <li>
+          <div class="collapsible-header"><i class="material-icons">code</i>Fill from Middle</div>
+          <div class="collapsible-body center-align">
+            <a class="waves-effect waves-light btn-floating valign-middle"><i class="material-icons">play_arrow</i></a>
+          </div>
+        </li>
+        <li>
+          <div class="collapsible-header"><i class="material-icons">compare_arrows</i>Fill from Sides</div>
+          <div class="collapsible-body center-align">
+            <a class="waves-effect waves-light btn-floating valign-middle"><i class="material-icons">play_arrow</i></a>
+          </div>
+        </li>
+        <li>
+          <div class="collapsible-header"><i class="material-icons">fast_forward</i>Fill Strip</div>
+          <div class="collapsible-body center-align">
+            <a class="waves-effect waves-light btn-floating valign-middle"><i class="material-icons">play_arrow</i></a>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div id="custom" class="col s12">
+      <h5>Set Individual LEDS:</h5>
+      <div class="starting-position">
+        <h6>Starting Position: <span id="position-label">1</span></h6>
+        <div id="starting-position-slider" class="slider"></div>
+      </div>
+      <div class="segment-length">
+        <h6>Segment Length: </h6>
+        <select class="segment-length-select">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
+      </div>
+      <div class="buttons center-align">
+        <a class="btn-floating btn-large waves-effect waves-light blue"><i class="material-icons">play_arrow</i></a>
+      </div>
+    </div>
   </div>
 
-  <div class="buttons center-align">
-    <a class="btn-floating btn-large waves-effect waves-light blue"><i class="material-icons">play_arrow</i></a>
-  </div>
 
 </body>

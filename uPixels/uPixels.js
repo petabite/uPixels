@@ -1,4 +1,4 @@
-var brightnessSlider, startingPositionSlider, segmentLengthSlider
+var brightnessSlider, delaySlider, startingPositionSlider, segmentLengthSlider
 $(document).ready(function(){
   $("#colorpicker").spectrum({
     color: "rgb(0, 255, 155)",
@@ -22,6 +22,24 @@ $(document).ready(function(){
 
   M.AutoInit();
   $('.tabs').tabs({'swipeable':true});
+
+  delaySlider = document.getElementById('delay-slider');
+  noUiSlider.create(delaySlider, {
+   start: 10,
+   step: 1,
+   behavior: 'drag-tap',
+   range: {
+     'min': 10,
+     'max': 1000
+   },
+   format: wNumb({
+     decimals: 0
+   })
+  });
+
+  delaySlider.noUiSlider.on('update', function (delay) {
+    $('#delay-label').text(delay);
+  })
 
   brightnessSlider = document.getElementById('brightness-slider');
   noUiSlider.create(brightnessSlider, {

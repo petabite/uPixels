@@ -13,6 +13,11 @@
   <link href="http://materializecss.com/extras/noUiSlider/nouislider.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="uPixels.css">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <!-- <link rel="apple-touch-icon" href="/static/apple-icon-114x114px.png">
+  <link rel="apple-touch-startup-image" href="/static/launchscreen.png"> -->
+  <meta name="apple-mobile-web-app-status-bar-style" content="translucent black">
 </head>
 
 <body>
@@ -30,9 +35,15 @@
       <h6>Color Picker:</h6>
       <input type="text" id="colorpicker">
     </div>
-    <div class="brightness col s6">
-      <h6>Brightness: <span id="brightness-label">50</span></h6>
-      <div id="brightness-slider" class="slider"></div>
+    <div class="settings col s6">
+      <div class="brightness">
+        <h6>Brightness: <span id="brightness-label">50</span>%</h6>
+        <div id="brightness-slider" class="slider"></div>
+      </div>
+      <div class="delay">
+        <h6>Delay: <span id="delay-label">10</span> ms</h6>
+        <div id="delay-slider" class="slider"></div>
+      </div>
     </div>
   </div>
 
@@ -48,6 +59,34 @@
         <li>
           <div class="collapsible-header"><i class="material-icons">looks</i>Rainbow</div>
           <div class="collapsible-body center-align">
+            <a class="waves-effect waves-light btn-floating valign-middle"><i class="material-icons">play_arrow</i></a>
+          </div>
+        </li>
+        <li>
+          <div class="collapsible-header"><i class="material-icons">call_missed</i>Bounce</div>
+          <div class="collapsible-body center-align">
+            <form class="options">
+              <p>
+                <label>
+                  <input class="with-gap" name="group3" type="radio" checked />
+                  <span>Solid Color</span>
+                </label>
+              </p>
+              <p>
+                <label>
+                  <input class="with-gap" name="group3" type="radio" checked />
+                  <span>Random Color</span>
+                </label>
+              </p>
+            </form>
+            <div class="segment-length">
+              <h6>Segment Length: </h6>
+              <select class="segment-length-select">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+              </select>
+            </div>
             <a class="waves-effect waves-light btn-floating valign-middle"><i class="material-icons">play_arrow</i></a>
           </div>
         </li>

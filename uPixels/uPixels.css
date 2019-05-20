@@ -1,13 +1,39 @@
 .sp-replacer {
   border-radius: 5px;
-  margin: 20px auto;
+  margin: 8px auto;
 }
+
+.controls {
+  z-index: 1;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 75px;
+  background-color: #eeeeee;
+  width: 93%;
+  padding: 1px;
+  height: 160px;
+  border-radius: 10px;
+}
+
 .slider {
-  margin-top: 20px;
+  margin-top: 10px;
 }
+
 #custom div {
     margin-bottom: 50px;
 }
+
 .tabs-content.carousel .carousel-item {
   height: 500px !important;
+}
+
+.options {
+  text-align: left;
+  width: 138px;
+  margin: auto;
+}
+
+.collapsible-body .select-wrapper {
+  width: 40px;
+  margin: auto;
 }

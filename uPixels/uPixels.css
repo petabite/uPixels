@@ -61,3 +61,11 @@ nav i {
   vertical-align: middle;
   margin: 2px;
 }
+
+#about i, .coded {
+  font-size: 23px;
+}
+
+#about i, .coded-by {
+  text-align: center;
+}

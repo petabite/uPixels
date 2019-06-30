@@ -69,3 +69,7 @@ nav i {
 #about i, .coded-by {
   text-align: center;
 }
+
+.tabs-content.carousel.carousel-slider {
+  height: 600px !important;
+}

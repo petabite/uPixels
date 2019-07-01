@@ -10,12 +10,15 @@ def randInt(lower, upper):
     else:
         return upper - 1
 
+def randColor():
+    return (randInt(0,256),randInt(0,256),randInt(0,256))
+
 def clear():
     for i in range(np.n):
         np[i] = (0,0,0)
     np.write()
 
-def chase(ms, color, direction='right'):
+def chase(ms=20, color=randColor(), direction='right'):
     if direction == 'right':
         led_iter = range(np.n)
     else:
@@ -26,7 +29,7 @@ def chase(ms, color, direction='right'):
         time.sleep_ms(ms)
         np[i] = (0,0,0)
 
-def fillStrip(ms, color):
+def fillStrip(ms=25, color=randColor()):
     count = np.n
     while count > 0:
         for i in range(count):
@@ -37,7 +40,7 @@ def fillStrip(ms, color):
                 np[i] = (0,0,0)
         count -= 1
 
-def fillFromMiddle(ms, color):
+def fillFromMiddle(ms=40, color=randColor()):
     midpoint = int(np.n / 2)
     counter = 0
     while counter != midpoint:
@@ -50,7 +53,7 @@ def fillFromMiddle(ms, color):
         time.sleep_ms(ms)
         counter += 1
 
-def fillFromSides(ms, color):
+def fillFromSides(ms=40, color=randColor()):
     midpoint = int(np.n / 2)
     counter = 0
     while counter != midpoint:
@@ -60,7 +63,7 @@ def fillFromSides(ms, color):
         time.sleep_ms(ms)
         counter += 1
 
-def randomFill(ms, color=True):
+def randomFill(ms=150, color=True):
     random_positions = []
     while len(random_positions) < np.n:
         random_pos = randInt(0, np.n)
@@ -68,7 +71,7 @@ def randomFill(ms, color=True):
             random_positions.append(random_pos)
     for position in random_positions:
         if color == True:
-            np[position] = (randInt(0,256),randInt(0,256),randInt(0,256))
+            np[position] = randColor()
         else:
             np[position] = color
         np.write()
@@ -79,7 +82,7 @@ def setSegment(segment_of_leds, color):
         np[led] = color
     np.write()
 
-def altColors(ms, firstColor, secondColor):
+def altColors(ms=125, firstColor=randColor(), secondColor=randColor()):
     while True:
         for i in range(np.n):
             if i % 2 == 0:
@@ -96,12 +99,16 @@ def altColors(ms, firstColor, secondColor):
         np.write()
         time.sleep_ms(ms)
 
-def bounce(ms, color):
+def bounce(ms=20, color=False):
     while True:
-        chase(ms, color, 'right')
-        chase(ms, color, 'left')
+        if color == False:
+            chase(ms, randColor(), 'right')
+            chase(ms, randColor(), 'left')
+        else:
+            chase(ms, color, 'right')
+            chase(ms, color, 'left')
 
-def rgbFade(ms):
+def rgbFade(ms=20):
     for channel in range(3):
         for v in range(256):
             if channel == 0:

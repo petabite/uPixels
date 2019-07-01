@@ -36,6 +36,14 @@
     <div class="colorpicker col s6">
       <h6>Color Picker:</h6>
       <input type="text" id="colorpicker">
+      <form>
+        <p class="random-color">
+          <label>
+            <input type="checkbox" id="random-color-checkbox" onchange="togglePickers();"/>
+            <span>Random Color</span>
+          </label>
+        </p>
+      </form>
     </div>
     <div class="settings col s6">
       <div class="brightness">
@@ -59,13 +67,16 @@
     </div>
     <div id="animations" class="col s12">
       <ul class="collapsible popout">
-        <li>
+        <li class="rainbow">
           <div class="collapsible-header"><i class="material-icons">looks</i>Rainbow</div>
           <div class="collapsible-body center-align">
-            <a class="waves-effect waves-light btn-floating valign-middle"><i class="material-icons">play_arrow</i></a>
+            <a class="btn-floating btn-small waves-effect waves-light red" onclick="changeVal('.rainbow .iterations', -1)"><i class="material-icons">remove</i></a>
+            <input type="number" class="iterations" value="2">
+            <a class="btn-floating btn-small waves-effect waves-light red" onclick="changeVal('.rainbow .iterations', 1)"><i class="material-icons">add</i></a><br>
+            <a class="waves-effect waves-light btn-floating valign-middle play"><i class="material-icons">play_arrow</i></a>
           </div>
         </li>
-        <li>
+        <li class="bounce">
           <div class="collapsible-header"><i class="material-icons">call_missed</i>Bounce</div>
           <div class="collapsible-body center-align">
             <form class="options">
@@ -82,30 +93,37 @@
                 </label>
               </p>
             </form>
-            <div class="segment-length">
-              <h6>Segment Length: </h6>
-              <select class="segment-length-select">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-              </select>
-            </div>
-            <a class="waves-effect waves-light btn-floating valign-middle"><i class="material-icons">play_arrow</i></a>
+            <a class="waves-effect waves-light btn-floating valign-middle play"><i class="material-icons">play_arrow</i></a>
           </div>
         </li>
-        <li>
+        <li class="chase">
           <div class="collapsible-header"><i class="material-icons">more_horiz</i>Chase</div>
           <div class="collapsible-body center-align">
+            <form class="options">
+              <label>Direction:</label>
+              <p>
+                <label>
+                  <input class="with-gap" name="group3" type="radio" checked />
+                  <span>Left</span>
+                </label>
+              </p>
+              <p>
+                <label>
+                  <input class="with-gap" name="group3" type="radio" checked />
+                  <span>Right</span>
+                </label>
+              </p>
+            </form>
             <a class="waves-effect waves-light btn-floating valign-middle"><i class="material-icons">play_arrow</i></a>
           </div>
         </li>
-        <li>
+        <li class="rgbFade">
           <div class="collapsible-header"><i class="material-icons">toll</i>RGB Fade</div>
           <div class="collapsible-body center-align">
             <a class="waves-effect waves-light btn-floating valign-middle"><i class="material-icons">play_arrow</i></a>
           </div>
         </li>
-        <li>
+        <li class="altColors">
           <div class="collapsible-header"><i class="material-icons">hdr_strong</i>Alernating Colors</div>
           <div class="collapsible-body center-align">
             <h5>Select Second Color:</h5>
@@ -146,12 +164,10 @@
         <div id="starting-position-slider" class="slider"></div>
       </div>
       <div class="segment-length">
-        <h6>Segment Length: </h6>
-        <select class="segment-length-select">
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-        </select>
+        <h6>Segment Length:</h6>
+        <a class="btn-floating btn-small waves-effect waves-light red" onclick="changeVal('.segment-select', -1)"><i class="material-icons">remove</i></a>
+        <input type="number" class="segment-select" value="1">
+        <a class="btn-floating btn-small waves-effect waves-light red" onclick="changeVal('.segment-select', 1)"><i class="material-icons">add</i></a><br>
       </div>
       <div class="buttons center-align">
         <a class="btn-floating btn-large waves-effect waves-light blue"><i class="material-icons">play_arrow</i></a>
@@ -184,6 +200,7 @@
         <li>noUiSlider.js</li>
         <li>MicroPython</li>
         <li>jQuery</li>
+        <li>jgarff - rpi_ws281x</li>
       </ul>
       <p class="coded-by"><i class="material-icons coded">code</i> by Philip Z (<a href="https://github.com/petabite">petabite</a>)</p>
     </div>

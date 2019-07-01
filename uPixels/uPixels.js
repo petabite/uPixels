@@ -90,4 +90,20 @@ $(document).ready(function(){
   //    decimals: 0
   //  })
   // });
+
+
 });
+
+function changeVal(element, val) {
+  $(element).val(+$(element).val()+val);
+}
+
+function togglePickers() {
+  if ($("#random-color-checkbox").prop('checked')) {
+    $("#colorpicker").spectrum("disable");
+    $("#second-colorpicker").spectrum("disable");
+  } else {
+    $("#colorpicker").spectrum("enable");
+    $("#second-colorpicker").spectrum("enable");
+  }
+}

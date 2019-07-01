@@ -20,6 +20,16 @@ nav i {
   border-radius: 10px;
 }
 
+.controls .colorpicker .random-color {
+  margin: 0 !important;
+}
+
+.controls .colorpicker .random-color span {
+  padding-left: 26px !important;
+  color: black;
+  margin-top: -4px;
+}
+
 .tabs i {
   margin-right: 5px;
   vertical-align: middle;
@@ -34,8 +44,12 @@ nav i {
   margin-top: 10px;
 }
 
-#custom div {
-    margin-bottom: 50px;
+#custom .starting-position {
+  margin-bottom: 50px;
+}
+
+#custom .buttons {
+  margin: 30px;
 }
 
 .tabs-content.carousel .carousel-item {
@@ -72,4 +86,24 @@ nav i {
 
 .tabs-content.carousel.carousel-slider {
   height: 600px !important;
+}
+
+.rainbow input.iterations, .segment-length .segment-select {
+  width: 16px !important;
+  height: 50px !important;
+  font-size: 30px !important;
+}
+
+.rainbow a.red, .segment-length a.red {
+  margin: 20px;
+}
+
+.rainbow .play {
+  margin: 20px;
+}
+
+.segment-length {
+  text-align: center;
+  margin: auto;
+  width: 170px;
 }

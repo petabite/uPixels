@@ -1,26 +1,71 @@
-import machine, neopixel, time, urandom
+import machine, uos, network, neopixel, time, urandom
 from uWeb import uWeb, loadJSON
 
 class uPixels:
+    VERSION = '1.0'
     def __init__(self, pin, num_leds, address="0.0.0.0", port=8000):
+        self.device_name = uos.uname()[0]
         self.pin = machine.Pin(pin, machine.Pin.OUT)  # configure pin for leds
         self.np = neopixel.NeoPixel(self.pin, num_leds)  # configure neopixel library
         self.address = address
         self.port = port
+        self.animation_map = {
+            'rainbow': self.rainbow,
+            'bounce': self.bounce,
+            'chase': self.chase,
+            'rgbFade': self.rgbFade,
+            'altColors': self.altColors,
+            'randomFill': self.randomFill,
+            'fillFromMiddle': self.fillFromMiddle,
+            'fillFromSides': self.fillFromSides,
+            'fillStrip': self.fillStrip,
+            'setSegment': self.setSegment,
+            'clear': self.clear
+        }
+
+    def setDeviceName(self, name):
+        self.device_name = name
 
     # web server methods
     def startServer(self):
         self.server = uWeb(self.address, self.port)
         self.server.routes({
-            (uWeb.GET, "/"): self.app
+            (uWeb.GET, "/"): self.app,
+            (uWeb.POST, '/execute'): self.execute
         })
         self.server.start()
 
     def app(self):
-        self.server.render('uPixels.html')
+        vars = {
+            'name' : self.device_name,
+            'upixels_ver': self.VERSION,
+            'mp_ver': uos.uname()[3],
+            'ip': network.WLAN(network.STA_IF).ifconfig()[0],
+            'host': network.WLAN(network.STA_IF).ifconfig()[0]+":"+str(self.server.port),
+            'num': self.np.n
+        }
+        self.server.render('uPixels.html', variables=vars)
+
+    def execute(self):
+        query = loadJSON(self.server.request_body)
+        action = query["action"]
+        params = query["params"]
+        if 'color' in params.keys():
+            if params['color'] != None:
+                params['color'] = (params['color']['r'], params['color']['g'], params['color']['b'])
+        if 'firstColor' in params.keys():
+            if params['firstColor'] != None:
+                params['firstColor'] = (params['firstColor']['r'], params['firstColor']['g'], params['firstColor']['b'])
+        if 'secondColor' in params.keys():
+            if params['secondColor'] != None:
+                params['secondColor'] = (params['secondColor']['r'], params['secondColor']['g'], params['secondColor']['b'])
+        print("passing ", params)
+        self.animation_map[action](**params) # call the animcation method
 
     # animation methods
-    def chase(self, ms=20, color=randColor(), direction='right'):
+    def chase(self, ms=20, color=None, direction='right'):
+        if color == None:
+            color = self.randColor()
         if direction == 'right':
             led_iter = range(self.np.n)
         else:
@@ -31,7 +76,9 @@ class uPixels:
             time.sleep_ms(ms)
             self.np[i] = (0,0,0)
 
-    def fillStrip(self, ms=25, color=randColor()):
+    def fillStrip(self, ms=25, color=None):
+        if color == None:
+            color = self.randColor()
         count = self.np.n
         while count > 0:
             for i in range(count):
@@ -42,7 +89,9 @@ class uPixels:
                     self.np[i] = (0,0,0)
             count -= 1
 
-    def fillFromMiddle(self, ms=40, color=randColor()):
+    def fillFromMiddle(self, ms=40, color=None):
+        if color == None:
+            color = self.randColor()
         midpoint = int(self.np.n / 2)
         counter = 0
         while counter != midpoint:
@@ -55,7 +104,9 @@ class uPixels:
             time.sleep_ms(ms)
             counter += 1
 
-    def fillFromSides(self, ms=40, color=randColor()):
+    def fillFromSides(self, ms=40, color=None):
+        if color == None:
+            color = self.randColor()
         midpoint = int(self.np.n / 2)
         counter = 0
         while counter != midpoint:
@@ -65,21 +116,25 @@ class uPixels:
             time.sleep_ms(ms)
             counter += 1
 
-    def randomFill(self, ms=150, color=True):
+    def randomFill(self, ms=150, color=None):
         random_positions = []
         while len(random_positions) < self.np.n:
-            random_pos = randInt(0, self.np.n)
+            random_pos = self.randInt(0, self.np.n)
             if random_pos not in random_positions:
                 random_positions.append(random_pos)
         for position in random_positions:
-            if color == True:
-                self.np[position] = randColor()
+            if color == None:
+                self.np[position] = self.randColor()
             else:
                 self.np[position] = color
             self.np.write()
             time.sleep_ms(ms)
 
-    def altColors(self, ms=125, firstColor=randColor(), secondColor=randColor()):
+    def altColors(self, ms=125, firstColor=None, secondColor=None):
+        if firstColor == None:
+            color = self.randColor()
+        if secondColor == None:
+            color = self.randColor()
         while True:
             for i in range(self.np.n):
                 if i % 2 == 0:
@@ -99,8 +154,8 @@ class uPixels:
     def bounce(self, ms=20, color=False):
         while True:
             if color == False:
-                self.chase(ms, randColor(), 'right')
-                self.chase(ms, randColor(), 'left')
+                self.chase(ms, self.randColor(), 'right')
+                self.chase(ms, self.randColor(), 'left')
             else:
                 self.chase(ms, color, 'right')
                 self.chase(ms, color, 'left')
@@ -109,25 +164,25 @@ class uPixels:
         for channel in range(3):
             for v in range(256):
                 if channel == 0:
-                    self.setSegment(list(range(10)), (v,0,0))
+                    self.setSegment(list(range(self.np.n)), (v,0,0))
                 if channel == 1:
-                    self.setSegment(list(range(10)), (0,v,0))
+                    self.setSegment(list(range(self.np.n)), (0,v,0))
                 if channel == 2:
-                    self.setSegment(list(range(10)), (0,0,v))
+                    self.setSegment(list(range(self.np.n)), (0,0,v))
                 time.sleep_ms(ms)
             for v in range(255,-1,-1):
                 if channel == 0:
-                    self.setSegment(list(range(10)), (v,0,0))
+                    self.setSegment(list(range(self.np.n)), (v,0,0))
                 if channel == 1:
-                    self.setSegment(list(range(10)), (0,v,0))
+                    self.setSegment(list(range(self.np.n)), (0,v,0))
                 if channel == 2:
-                    self.setSegment(list(range(10)), (0,0,v))
+                    self.setSegment(list(range(self.np.n)), (0,0,v))
                 time.sleep_ms(ms)
 
     def rainbow(self, ms=20, iterations = 2):
         for j in range(256*iterations):
             for i in range(self.np.n):
-                self.np[i] = wheel(((i * 256 // self.np.n) + j) & 255)
+                self.np[i] = self.wheel(((i * 256 // self.np.n) + j) & 255)
             self.np.write()
             time.sleep_ms(ms)
 
@@ -135,7 +190,7 @@ class uPixels:
         for j in range(256):
             for q in range(3):
                 for i in range(0, self.np.n, 3):
-                    self.np[i+q] = wheel((i+j) % 255)
+                    self.np[i+q] = self.wheel((i+j) % 255)
                 self.np.write()
                 time.sleep_ms(ms)
                 for i in range(0, self.np.n, 3):
@@ -158,7 +213,7 @@ class uPixels:
             return upper - 1
 
     def randColor(self):
-        return (randInt(0,256),randInt(0,256),randInt(0,256))
+        return (self.randInt(0,256),self.randInt(0,256),self.randInt(0,256))
 
     def wheel(self, pos):
         if pos < 85:

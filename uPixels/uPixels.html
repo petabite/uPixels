@@ -20,6 +20,7 @@
   <link rel="apple-touch-startup-image" href="https://raw.githubusercontent.com/petabite/uPixels/master/images/launchscreen.png">
   <link rel="shortcut icon" href="https://raw.githubusercontent.com/petabite/uPixels/master/images/favicon.ico">
   <meta name="apple-mobile-web-app-status-bar-style" content="translucent black">
+  <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' />
 </head>
 
 <body>
@@ -43,6 +44,12 @@
             <span>Random Color</span>
           </label>
         </p>
+        <p class="default-delay">
+          <label>
+            <input type="checkbox" id="default-delay-checkbox" checked="checked" onchange="toggleDelaySlider();"/>
+            <span>Default Delay</span>
+          </label>
+        </p>
       </form>
     </div>
     <div class="settings col s6">
@@ -54,6 +61,7 @@
         <h6>Delay: <span id="delay-label">10</span> ms</h6>
         <div id="delay-slider" class="slider"></div>
       </div>
+      <a class="waves-effect waves-light btn-small red clear" onclick="clearStrip();"><i class="material-icons left">clear</i>clear strip</a>
     </div>
   </div>
 
@@ -73,27 +81,13 @@
             <a class="btn-floating btn-small waves-effect waves-light red" onclick="changeVal('.rainbow .iterations', -1)"><i class="material-icons">remove</i></a>
             <input type="number" class="iterations" value="2">
             <a class="btn-floating btn-small waves-effect waves-light red" onclick="changeVal('.rainbow .iterations', 1)"><i class="material-icons">add</i></a><br>
-            <a class="waves-effect waves-light btn-floating valign-middle play"><i class="material-icons">play_arrow</i></a>
+            <a class="waves-effect waves-light btn-floating valign-middle play" onclick="rainbow();"><i class="material-icons">play_arrow</i></a>
           </div>
         </li>
         <li class="bounce">
           <div class="collapsible-header"><i class="material-icons">call_missed</i>Bounce</div>
           <div class="collapsible-body center-align">
-            <form class="options">
-              <p>
-                <label>
-                  <input class="with-gap" name="group3" type="radio" checked />
-                  <span>Solid Color</span>
-                </label>
-              </p>
-              <p>
-                <label>
-                  <input class="with-gap" name="group3" type="radio" checked />
-                  <span>Random Color</span>
-                </label>
-              </p>
-            </form>
-            <a class="waves-effect waves-light btn-floating valign-middle play"><i class="material-icons">play_arrow</i></a>
+            <a class="waves-effect waves-light btn-floating valign-middle play" onclick="bounce();"><i class="material-icons">play_arrow</i></a>
           </div>
         </li>
         <li class="chase">
@@ -103,7 +97,7 @@
               <label>Direction:</label>
               <p>
                 <label>
-                  <input class="with-gap" name="group3" type="radio" checked />
+                  <input class="with-gap" name="group3" type="radio" id="left" checked />
                   <span>Left</span>
                 </label>
               </p>
@@ -114,13 +108,13 @@
                 </label>
               </p>
             </form>
-            <a class="waves-effect waves-light btn-floating valign-middle"><i class="material-icons">play_arrow</i></a>
+            <a class="waves-effect waves-light btn-floating valign-middle" onclick="chase();"><i class="material-icons">play_arrow</i></a>
           </div>
         </li>
         <li class="rgbFade">
           <div class="collapsible-header"><i class="material-icons">toll</i>RGB Fade</div>
           <div class="collapsible-body center-align">
-            <a class="waves-effect waves-light btn-floating valign-middle"><i class="material-icons">play_arrow</i></a>
+            <a class="waves-effect waves-light btn-floating valign-middle" onclick="rgbFade();"><i class="material-icons">play_arrow</i></a>
           </div>
         </li>
         <li class="altColors">
@@ -128,31 +122,31 @@
           <div class="collapsible-body center-align">
             <h5>Select Second Color:</h5>
             <input type="text" id="second-colorpicker"><br>
-            <a class="waves-effect waves-light btn-floating valign-middle"><i class="material-icons">play_arrow</i></a>
+            <a class="waves-effect waves-light btn-floating valign-middle" onclick="altColors();"><i class="material-icons">play_arrow</i></a>
           </div>
         </li>
-        <li>
+        <li class="randomFill">
           <div class="collapsible-header"><i class="material-icons">blur_on</i>Random Fill</div>
           <div class="collapsible-body center-align">
-            <a class="waves-effect waves-light btn-floating valign-middle"><i class="material-icons">play_arrow</i></a>
+            <a class="waves-effect waves-light btn-floating valign-middle" onclick="randomFill();"><i class="material-icons">play_arrow</i></a>
           </div>
         </li>
-        <li>
+        <li class="fillFromMiddle">
           <div class="collapsible-header"><i class="material-icons">code</i>Fill from Middle</div>
           <div class="collapsible-body center-align">
-            <a class="waves-effect waves-light btn-floating valign-middle"><i class="material-icons">play_arrow</i></a>
+            <a class="waves-effect waves-light btn-floating valign-middle" onclick="fillFromMiddle();"><i class="material-icons">play_arrow</i></a>
           </div>
         </li>
-        <li>
+        <li class="fillFromSides">
           <div class="collapsible-header"><i class="material-icons">compare_arrows</i>Fill from Sides</div>
           <div class="collapsible-body center-align">
-            <a class="waves-effect waves-light btn-floating valign-middle"><i class="material-icons">play_arrow</i></a>
+            <a class="waves-effect waves-light btn-floating valign-middle" onclick="fillFromSides();"><i class="material-icons">play_arrow</i></a>
           </div>
         </li>
-        <li>
+        <li class="fillStrip">
           <div class="collapsible-header"><i class="material-icons">fast_forward</i>Fill Strip</div>
           <div class="collapsible-body center-align">
-            <a class="waves-effect waves-light btn-floating valign-middle"><i class="material-icons">play_arrow</i></a>
+            <a class="waves-effect waves-light btn-floating valign-middle" onclick="fillStrip();"><i class="material-icons">play_arrow</i></a>
           </div>
         </li>
       </ul>
@@ -165,12 +159,12 @@
       </div>
       <div class="segment-length">
         <h6>Segment Length:</h6>
-        <a class="btn-floating btn-small waves-effect waves-light red" onclick="changeVal('.segment-select', -1)"><i class="material-icons">remove</i></a>
-        <input type="number" class="segment-select" value="1">
+        <a class="btn-floating btn-small waves-effect waves-light red" onclick="changeVal('.segment-select', -1);"><i class="material-icons">remove</i></a>
+        <input type="number" class="segment-select" value="1" >
         <a class="btn-floating btn-small waves-effect waves-light red" onclick="changeVal('.segment-select', 1)"><i class="material-icons">add</i></a><br>
-      </div>
-      <div class="buttons center-align">
-        <a class="btn-floating btn-large waves-effect waves-light blue"><i class="material-icons">play_arrow</i></a>
+        <div class="buttons center-align">
+          <a class="btn-floating btn-large waves-effect waves-light blue" onclick="setSegment();"><i class="material-icons">play_arrow</i></a>
+        </div>
       </div>
     </div>
     <div id="about" class="col s12">
@@ -179,15 +173,27 @@
         <tbody>
           <tr>
             <td>Device Name:</td>
-            <td>asdf</td>
+            <td>{{name}}</td>
+          </tr>
+          <tr>
+            <td>uPixels Version:</td>
+            <td>{{upixels_ver}}</td>
+          </tr>
+          <tr>
+            <td>MicroPython Version:</td>
+            <td>{{mp_ver}}</td>
           </tr>
           <tr>
             <td>IP Address:</td>
-            <td>asdf</td>
+            <td>{{ip}}</td>
+          </tr>
+          <tr>
+            <td>App Hosted at:</td>
+            <td>{{host}}</td>
           </tr>
           <tr>
             <td>Number of LEDS:</td>
-            <td>asdf</td>
+            <td>{{num}}</td>
           </tr>
         </tbody>
       </table>

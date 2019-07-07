@@ -20,14 +20,34 @@ nav i {
   border-radius: 10px;
 }
 
-.controls .colorpicker .random-color {
+.controls h5 {
+  margin: 5px 0 0 0 !important;
+}
+
+.controls .colorpicker form {
+  text-align: left;
+}
+
+.controls .colorpicker .random-color, .default-delay {
   margin: 0 !important;
 }
 
-.controls .colorpicker .random-color span {
+.controls .colorpicker .random-color span , .default-delay span {
   padding-left: 26px !important;
   color: black;
   margin-top: -4px;
+}
+
+.controls .settings .clear {
+  height: 30px;
+  width: 120px;
+  margin-top: 10px;
+  padding: 0;
+}
+
+.controls .settings .clear i {
+  margin-right: 2px;
+  margin-left: 5px;
 }
 
 .tabs i {
@@ -86,10 +106,11 @@ nav i {
 
 .tabs-content.carousel.carousel-slider {
   height: 600px !important;
+  overflow: auto;
 }
 
 .rainbow input.iterations, .segment-length .segment-select {
-  width: 16px !important;
+  width: 34px !important;
   height: 50px !important;
   font-size: 30px !important;
 }
@@ -105,5 +126,5 @@ nav i {
 .segment-length {
   text-align: center;
   margin: auto;
-  width: 170px;
+  width: 190px;
 }

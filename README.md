@@ -13,6 +13,7 @@
 - [Setup](#setup)
 - [Quick Start](#quick-start)
 - [Documentation](#documentation)
+- [Additional Resources](#additional-resources)
 - [Tested On](#tested-on)
 - [Credits](#credits)
 
@@ -333,7 +334,7 @@ Serves the UI using the uWeb server on specified address and port
 
 -----
 
-## Addtional Resources
+## Additional Resources
 - [Adafruit](https://learn.adafruit.com/adafruit-neopixel-uberguide)
 - [Sparkfun](https://learn.sparkfun.com/tutorials/ws2812-breakout-hookup-guide/all)
 - [NodeMCU v3 Pinout](https://www.theengineeringprojects.com/wp-content/uploads/2018/10/Introduction-to-NodeMCU-V3.png)

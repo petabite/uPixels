@@ -1,14 +1,28 @@
-# μPixels
+# μPixels (microPixels)
 
 ![logo](https://raw.githubusercontent.com/petabite/uPixels/master/images/apple-icon-114x114px.png)
 
 ### Addressable RGB LED Strip controller for MicroPython enabled micro-controllers
 
+## Contents
+- [Features](#features)
+- [Screenshot](#screenshot)
+- [Requirements](#requirements)
+- [Dependencies](#dependencies)
+- [Schematic](#schematic)
+- [Setup](#setup)
+- [Quick Start](#quick-start)
+- [Documentation](#documentation)
+- [Tested On](#tested-on)
+- [Credits](#credits)
+
+
 ## Features
 
-- Complete control over animations from delay time, color, brightness
+- Up and running in just three lines of code!
 - User-friendly interface hosted from the micro-controller itself!
-- Completely customizable animations and user interface which is written in plain HTML/CSS/JS!
+- Complete control over animations from delay time, color, brightness
+- Completely customizable animations and user interface which is written in just Python/HTML/CSS/JS!
 - Use with the user interface or just use the Animations API
 
     ### Out of the Box Animations:
@@ -51,7 +65,7 @@
 
 ## Schematic
 
-#### The circuit diagram below depicts the setup I used to develop μPixels. 
+#### The circuit diagram below is one possible configuration for μPixels. 
 
 ![schematic](https://raw.githubusercontent.com/petabite/uPixels/master/images/uPixels.png)
 
@@ -59,7 +73,7 @@
 
 - Depending on your board, you may not need the Logic Level Shifter. The NodeMCU ESP8266(which I used for testing) is a 3V3 board while the LED Strip is a 5V device so it is important that the 3V3 signal is converted to 5V so that everything works properly.
 - The power supply that you will need for your project will vary depending on the number of LEDS you want to drive(Rule of thumb: Each individual LED draws about 60mA @ full brightness/completely white). Refer to these resources to decide: [Adafruit](https://learn.adafruit.com/adafruit-neopixel-uberguide), [Sparkfun](https://learn.sparkfun.com/tutorials/ws2812-breakout-hookup-guide/all)
-- The capacitor between the terminals of the power supply will help to smooth the supply of power when power draw changes drastically. 
+- The capacitor between the terminals of the power supply helps to smooth the supply of power as power draw can change drastically. 
 - It is important that all the grounds are connected together.
 - It is recommended to power the LED strip directly from the power source. Don't power the strip from the board. Your board might not be able to supply the necessary current and it will blow up 💥. 
 - You may power the LEDs directly from the board if you only want to drive a few LEDs.
@@ -99,7 +113,7 @@ from uPixels import uPixels
 pixels = uPixels(4, 30) # init a μPixels object on Pin 4 that is controlling a LED strip with 30 LEDS
 
 for i in range(3):
-    pixels.chase(ms=40, color=(100, 0, 0), direction='right') # do a chase         animation with delay of 40ms, red color, going right three times.
+    pixels.chase(ms=40, color=(100, 0, 0), direction='right') # do a chase animation three times with delay of 40ms, red color, going right.
 
 pixels.randomFill(ms=150, color=None) # random fill animation with 150ms delay and random colors
 ```
@@ -108,10 +122,226 @@ pixels.randomFill(ms=150, color=None) # random fill animation with 150ms delay a
 
 ## Documentation
 
-### Animation Methods
+### Objects
+
+### `uPixels.uPixels(pin, num_leds, address="0.0.0.0", port=8000)`
+
+ ###### Description
+Initialize a uPixels object to control a LED strip with `num_leds` on `pin`. `Address` and `port` specifies where to host the UI.
+
+  ###### Parameters
+  - pin - (int) pin where the LED strip data line is connected
+  - num_leds - (int) number of LEDS on strip
+  - address - (str) address to listen on. Default: "0.0.0.0"
+  - port - (int) port to listen on. Default: 8000
+
+## Attributes
+
+- `uPixels.device_name` - (str) name of device
+- `uPixels.pin` - (machine.Pin) pin object of board that LED is connected to
+- `uPixels.np` - (neopixel.NeoPixel) Neopixel object
+- `uPixels.address` - (str) address UI is hosted on
+- `uPixels.port` - (int) port UI is hosted on
+- `uPixels.animation_map` - (dict) mapping of animation names to their corresponding functions. Used when calling the animations from the UI.
+
+----
+
+## Server Methods
+
+
+## `uPixels.setDeviceName(name)`
+
+  ###### Description
+  Sets name of device
+  ###### Parameters
+  - name - (str) device name
+
+-----
+
+## `uPixels.startServer()`
+
+###### Description
+Serves the UI using the uWeb server on specified address and port
+
+-----
+
+
+## `uPixels.app()`
+
+  ###### Description
+  Renders the UI template to client
+
+-----
+
+## `uPixels.execute()`
+
+  ###### Description
+  Runs when uPixels receives a POST request from the client and executes the animation from uPixels.animation_map
+
+-----
+
+## Animations API
+
+## `uPixels.chase(ms=20, color=None, direction='right')`
+
+  ###### Description
+  Chase animation going left or right
+  ###### Parameters
+  - ms - (int) delay time in milliseconds. Default: 20
+  - color - (tuple) RGB color for animation in the format (r, g, b). Default: None(random color)
+  - direction - (str) direction of animation; 'left' or 'right'. Default: 'right'
+
+-----
+
+## `uPixels.fillStrip(ms=25, color=None)`
+
+  ###### Description
+  Fill strip animation starting from the first LED
+  ###### Parameters
+  - ms - (int) delay time in milliseconds. Default: 25
+  - color - (tuple) RGB color for animation in the format (r, g, b). Default: None(random color)
+
+-----
+
+## `uPixels.fillFromMiddle(ms=40, color=None)`
+
+  ###### Description
+  Fill strip animation starting from the middle of the strip
+  ###### Parameters
+  - ms - (int) delay time in milliseconds. Default: 40
+  - color - (tuple) RGB color for animation in the format (r, g, b). Default: None(random color)
+
+-----
+
+## `uPixels.fillFromSides(ms=40, color=None)`
+
+  ###### Description
+  Fill strip animation starting from both ends
+  ###### Parameters
+  - ms - (int) delay time in milliseconds. Default: 40
+  - color - (tuple) RGB color for animation in the format (r, g, b). Default: None(random color)
+
+-----
+
+## `uPixels.randomFill(ms=150, color=None)`
+
+  ###### Description
+  Random filling of strip one LED at a time
+  ###### Parameters
+  - ms - (int) delay time in milliseconds. Default: 150
+  - color - (tuple) RGB color for animation in the format (r, g, b). Default: None(random color)
+
+-----
+
+## `uPixels.altColors(ms=125, firstColor=None, secondColor=None)`
+
+  ###### Description
+  Alternating colors every other LED on strip
+  ###### Parameters
+  - ms - (int) delay time in milliseconds. Default: 125
+  - firstColor - (tuple) RGB color for first color in the format (r, g, b). Default: None(random color)
+  - secondColor - (tuple) RGB color for second color in the format (r, g, b). Default: None(random color)
+
+-----
+
+## `uPixels.bounce(ms=20, color=False)`
+
+  ###### Description
+  Bouncing animation of one LED from left to right and back
+  ###### Parameters
+  - ms - (int) delay time in milliseconds. Default: 20
+  - color - (tuple) RGB color for animation in the format (r, g, b). Default: False(random color)
+
+-----
+
+## `uPixels.rgbFade(ms=20)`
+
+  ###### Description
+  Fade of RGB values on whole strip
+  ###### Parameters
+  - ms - (int) delay time in milliseconds. Default: 20
+
+-----
+
+## `uPixels.rainbow(ms=20, iterations = 2)`
+
+  ###### Description
+  Cycle of colors in rainbow over entire strip
+  ###### Parameters
+  - ms - (int) delay time in milliseconds. Default: 20
+  - iterations - (int) repetitions of animation
+
+-----
+
+## `uPixels.rainbowChase(ms=50)`
+
+  ###### Description
+  Rainbow chase animation
+  ###### Parameters
+  - ms - (int) delay time in milliseconds. Default: 50
+
+-----
+
+## `uPixels.clear()`
+
+  ###### Description
+  Clears entire strip
+
+-----
+
+## Helper Methods
+
+## `uPixels.setSegment(segment_of_leds, color)`
+
+  ###### Description
+  Set specified segments of LEDS to a color
+  ###### Parameters
+  - segment_of_leds - (list) positions of each individual LED to be set(Ex: `[1, 4, 10]` will set LEDS @ index 1, 4, and 10 to the color).
+  - color - (tuple) RGB color for animation in the format (r, g, b).
+
+-----
+
+## `uPixels.randInt(lower, upper)`
+
+  ###### Description
+  Returns a random number between lower and upper(not including upper)
+  ###### Parameters
+  - lower - (int) lower bound
+  - upper - (int) upper bound(this value is not included in the function)
+  ###### Returns
+  - (int) integer between `lower` and `upper` not including `upper`
+
+-----
+
+## `uPixels.randColor()`
+
+  ###### Description
+  Return a random RGB tuple
+  ###### Returns
+  - (tuple) RGB tuple in form (r, g, b). Min: 0, Max: 255
+
+-----
+
+## `uPixels.wheel(pos)`
+
+  ###### Description
+  Rainbow wheel function used in the rainbow animations
+  ###### Parameters
+  - pos - (int) position in wheel
+  ###### Returns
+  - (tuple) RGB tuple representing the position of the wheel
+
+-----
+
+## Addtional Resources
+- [Adafruit](https://learn.adafruit.com/adafruit-neopixel-uberguide)
+- [Sparkfun](https://learn.sparkfun.com/tutorials/ws2812-breakout-hookup-guide/all)
+- [NodeMCU v3 Pinout](https://www.theengineeringprojects.com/wp-content/uploads/2018/10/Introduction-to-NodeMCU-V3.png)
+- [WS2812B LED Strip Datasheet](https://www.kitronik.co.uk/pdf/WS2812B-LED-datasheet.pdf)
 
 ## Tested on
-- NodeMCU ESP8266
+- NodeMCU v3 (ESP8266)
+- WS2812b Individually Addressable RGB LEDs
 
 ## Credits
 - MaterializeCSS

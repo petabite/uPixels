@@ -25,6 +25,7 @@
 - Complete control over animations from delay time, color, brightness
 - Completely customizable animations and user interface which is written in just Python/HTML/CSS/JS!
 - Use with the user interface or just use the Animations API
+- Support for optional separate status indicator LED
 
     ### Out of the Box Animations:
 
@@ -66,7 +67,7 @@
 
 ## Schematic
 
-#### The circuit diagram below is one possible configuration for μPixels. 
+#### The circuit diagram below is one possible configuration for μPixels.
 
 ![schematic](https://raw.githubusercontent.com/petabite/uPixels/master/images/uPixels.png)
 
@@ -74,16 +75,16 @@
 
 - Depending on your board, you may not need the Logic Level Shifter. The NodeMCU ESP8266(which I used for testing) is a 3V3 board while the LED Strip is a 5V device so it is important that the 3V3 signal is converted to 5V so that everything works properly.
 - The power supply that you will need for your project will vary depending on the number of LEDS you want to drive(Rule of thumb: Each individual LED draws about 60mA @ full brightness/completely white). Refer to these resources to decide: [Adafruit](https://learn.adafruit.com/adafruit-neopixel-uberguide), [Sparkfun](https://learn.sparkfun.com/tutorials/ws2812-breakout-hookup-guide/all)
-- The capacitor between the terminals of the power supply helps to smooth the supply of power as power draw can change drastically. 
+- The capacitor between the terminals of the power supply helps to smooth the supply of power as power draw can change drastically.
 - It is important that all the grounds are connected together.
-- It is recommended to power the LED strip directly from the power source. Don't power the strip from the board. Your board might not be able to supply the necessary current and it will blow up 💥. 
+- It is recommended to power the LED strip directly from the power source. Don't power the strip from the board. Your board might not be able to supply the necessary current and it will blow up 💥.
 - You may power the LEDs directly from the board if you only want to drive a few LEDs.
 
 
 ## Setup
 1. Install MicroPython on your board if you have not already ([ESP8266 installation](http://docs.micropython.org/en/latest/esp8266/tutorial/intro.html#intro))
 1. Install μWeb by following the INSTALLATION instructions on my [repo](https://github.com/petabite/uWeb#installation).
-1. Copy the μPixels project files to your board using the same method you used to copy the μWeb files. Make sure that you have transferred:
+1. Head over to the releases tab on this repo. Download the source code for the latest version. Copy the μPixels project files to your board using the same method you used to copy the μWeb files. Make sure that you have transferred:
     - uPixels.css
     - uPixels.html
     - uPixels.js
@@ -92,7 +93,7 @@
 1. Check out the [Quick Start](#quick-start) section for examples.
 1. Make sure you also have a boot.py for the initial setup of your board(ie: connecting to wifi) and main.py for the μPixels code.
 1. Power up your board.
-1. Navigate to your board's IP address on port 8000 to access the UI(Ex: 192.168.100.48:8000)
+1. Navigate to your board's IP address on port 8000 using a web browser to access the UI(Ex: 192.168.100.48:8000)
 1. Enjoy the light show!
 
 ## Quick Start
@@ -144,6 +145,7 @@ Initialize a uPixels object to control a LED strip with `num_leds` on `pin`. `Ad
 - `uPixels.address` - (str) address UI is hosted on
 - `uPixels.port` - (int) port UI is hosted on
 - `uPixels.animation_map` - (dict) mapping of animation names to their corresponding functions. Used when calling the animations from the UI.
+- `uPixels.statusLED` - (int) pin number of status LED indicator. Default: 5
 
 ----
 
@@ -181,7 +183,34 @@ Serves the UI using the uWeb server on specified address and port
 
 -----
 
+## `uPixels.setStatusLED(pin)`
+
+  ###### Description
+  Set the pin number for the optional status LED indicator
+  ###### Parameters
+  - pin - (int) pin number where your LED is connected. NOTE: set this to False to disable the status LED indicator
+
+-----
+
+## `uPixels.toggleServerStatusLED(status=1)`
+
+  ###### Description
+  Toggle the status LED indicator
+  ###### Parameters
+  - status - (int) state of the LED to set; 0 = off, 1 = on. Default: 1.
+
+-----
+
 ## Animations API
+
+-----
+
+## `uPixels.startupAnimation()`
+
+  ###### Description
+  Default startup animation played when uPixels is first initialized. Override this method to set a custom animation.
+
+-----
 
 ## `uPixels.chase(ms=20, color=None, direction='right')`
 

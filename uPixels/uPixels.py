@@ -22,6 +22,9 @@ class uPixels:
             'setSegment': self.setSegment,
             'clear': self.clear
         }
+        self.statusLED = 5
+        self.startupAnimation()
+        self.toggleServerStatusLED()
 
     def setDeviceName(self, name):
         self.device_name = name
@@ -62,7 +65,20 @@ class uPixels:
         print("passing ", params)
         self.animation_map[action](**params) # call the animcation method
 
+    def setStatusLED(self, pin):
+        self.statusLED = pin
+
+    def toggleServerStatusLED(self, status=1):
+        if self.statusLED:
+            status_led = machine.Pin(self.statusLED, machine.Pin.OUT)
+            status_led.value(status)
+
     # animation methods
+    def startupAnimation(self):
+        self.chase(color=(0, 255, 155), direction='right')
+        self.chase(color=(0, 255, 155), direction='left')
+        self.clear()
+
     def chase(self, ms=20, color=None, direction='right'):
         if color == None:
             color = self.randColor()

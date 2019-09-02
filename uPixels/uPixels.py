@@ -24,7 +24,6 @@ class uPixels:
         }
         self.statusLED = 5
         self.startupAnimation()
-        self.toggleServerStatusLED()
 
     def setDeviceName(self, name):
         self.device_name = name
@@ -36,6 +35,7 @@ class uPixels:
             (uWeb.GET, "/"): self.app,
             (uWeb.POST, '/execute'): self.execute
         })
+        self.toggleServerStatusLED()
         self.server.start()
 
     def app(self):

@@ -75,6 +75,11 @@ $(document).ready(function() {
   startingPositionSlider.noUiSlider.on('update', function(position) {
     $('#position-label').text(position);
   })
+
+  $('#u-logo').on('click touchstart', function() {
+    location.reload()
+  })
+
 });
 
 function changeVal(element, val) {
@@ -128,7 +133,7 @@ function getDelaySelection() {
   if ($('#default-delay-checkbox').is(":checked")) {
     return undefined
   } else {
-    return document.getElementById('delay-slider').noUiSlider.get()
+    return Number(document.getElementById('delay-slider').noUiSlider.get())
   }
 }
 
@@ -211,6 +216,14 @@ function fillStrip() {
   execute('fillStrip', {
     'ms': getDelaySelection(),
     'color': getColorSelection()
+  })
+}
+
+function christmas() {
+  execute('altColors', {
+    'ms': 300,
+    'firstColor': {'r': 0,'g': 255,'b': 0},
+    'secondColor': {'r': 255,'g': 13,'b': 13}
   })
 }
 

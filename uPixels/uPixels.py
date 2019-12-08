@@ -152,6 +152,9 @@ class uPixels:
         if secondColor == None:
             color = self.randColor()
         while True:
+            if time.localtime()[3] == 6:
+                self.clear()
+                break
             for i in range(self.np.n):
                 if i % 2 == 0:
                     self.np[i] = firstColor

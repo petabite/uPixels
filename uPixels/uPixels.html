@@ -69,7 +69,7 @@
     <div class="col s12">
       <ul class="tabs">
         <li class="tab col s6"><a class="active" href="#animations"><i class="material-icons">lightbulb_outline</i><span class="tab-title">animations</span></a></li>
-        <li class="tab col s5"><a href="#custom"><i class="material-icons">settings</i><span class="tab-title">custom</span></a></li>
+        <li class="tab col s5"><a href="#colors"><i class="material-icons">color_lens</i><span class="tab-title">colors</span></a></li>
         <li class="tab col s4"><a href="#about"><i class="material-icons">info_outline</i><span class="tab-title">about</span></a></li>
       </ul>
     </div>
@@ -157,20 +157,52 @@
         </li>
       </ul>
     </div>
-    <div id="custom" class="col s12">
-      <h5>Set Individual LEDS:</h5>
-      <div class="starting-position">
-        <h6>Starting Position: <span id="position-label">1</span></h6>
-        <div id="starting-position-slider" class="slider"></div>
+    <div id="colors" class="col s12">
+      <div class="color-buttons">
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[205, 10, 10]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[230, 32, 32]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[255, 0, 0]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[255, 18, 18]'></a>
+
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[255, 43, 0]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[205, 55, 10]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[255, 108, 8]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[210, 129, 15]'></a>
+
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[255, 240, 0]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[212, 238, 24]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[168, 200, 20]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[196, 207, 21]'></a>
+
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[43, 255, 0]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[73, 255, 0]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[82, 225, 25]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[36, 187, 6]'></a>
+
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[0, 23, 255]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[0, 255, 78]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[0, 204, 255]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[39, 211, 215]'></a>
+
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[99, 0, 255]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[205, 0, 255]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[172, 48, 202]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[131, 74, 220]'></a>
+
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[255, 0, 199]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[255, 0, 230]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[187, 52, 150]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[200, 74, 74]'></a>
+
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[255, 255, 255]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[170, 182, 80]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[199, 220, 46]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[255, 153, 58]'></a>
       </div>
-      <div class="segment-length">
-        <h6>Segment Length:</h6>
-        <a class="btn-floating btn-small waves-effect waves-light red" onclick="changeVal('.segment-select', -1);"><i class="material-icons">remove</i></a>
-        <input type="number" class="segment-select" value="1" >
-        <a class="btn-floating btn-small waves-effect waves-light red" onclick="changeVal('.segment-select', 1)"><i class="material-icons">add</i></a><br>
-        <div class="buttons center-align">
-          <a class="btn-floating btn-large waves-effect waves-light blue" onclick="setSegment();"><i class="material-icons">play_arrow</i></a>
-        </div>
+      <h6 class="center-align">Set strip to color picker selection:</h6>
+      <div class="buttons center-align">
+        <a class="btn-floating btn-large waves-effect waves-light blue" onclick="setStripToColor(getColorSelection());"><i class="material-icons">play_arrow</i></a>
+      </div>
       </div>
     </div>
     <div id="about" class="col s12">
@@ -218,3 +250,6 @@
     </div>
   </div>
 </body>
+<script>
+  var num_leds = {{num}};
+</script>

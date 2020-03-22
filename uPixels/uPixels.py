@@ -1,4 +1,4 @@
-import machine, uos, network, neopixel, time, urandom
+import machine, uos, network, neopixel, time, urandom, ntptime
 from uWeb import uWeb, loadJSON
 
 class uPixels:
@@ -147,6 +147,7 @@ class uPixels:
             time.sleep_ms(ms)
 
     def altColors(self, ms=125, firstColor=None, secondColor=None):
+        ntptime.settime()
         if firstColor == None:
             color = self.randColor()
         if secondColor == None:

@@ -17,6 +17,20 @@ $(document).ready(function() {
     }
   });
 
+  $('.color-buttons').children().each(function() {
+    color_array = $(this).data('color')
+    $(this).css('background-color', 'rgb('+ color_array[0] + ',' + color_array[1] + ','+ color_array[2] + ')')
+    $(this).click(function () {
+      color_array = $(this).data('color')
+      color = {
+        'r': Math.round(color_array[0] * getBrightness()),
+        'g': Math.round(color_array[1] * getBrightness()),
+        'b': Math.round(color_array[2] * getBrightness())
+      }
+      setStripToColor(color)
+    })
+  })
+
   M.AutoInit();
   $('.tabs').tabs({
     'swipeable': true
@@ -58,28 +72,9 @@ $(document).ready(function() {
     $('#brightness-label').text(brightness);
   })
 
-  startingPositionSlider = document.getElementById('starting-position-slider');
-  noUiSlider.create(startingPositionSlider, {
-    start: 1,
-    step: 1,
-    behavior: 'drag-tap',
-    range: {
-      'min': [0],
-      'max': [300]
-    },
-    format: wNumb({
-      decimals: 0
-    })
-  });
-
-  startingPositionSlider.noUiSlider.on('update', function(position) {
-    $('#position-label').text(position);
-  })
-
   $('#u-logo').on('click touchstart', function() {
     location.reload()
   })
-
 });
 
 function changeVal(element, val) {
@@ -227,12 +222,10 @@ function christmas() {
   })
 }
 
-function setSegment() {
-  clearStrip();
-  start = Number(document.getElementById('starting-position-slider').noUiSlider.get())
+function setStripToColor(color) {
   execute('setSegment', {
-    "segment_of_leds": Array.from(new Array(Number($(".segment-select").val())), (x, i) => i + start),
-    "color": getColorSelection()
+    "segment_of_leds": Array.from(Array(num_leds).keys()),
+    "color": color
   })
 }
 

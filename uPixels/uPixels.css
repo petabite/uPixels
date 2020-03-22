@@ -28,11 +28,13 @@ nav i {
   text-align: left;
 }
 
-.controls .colorpicker .random-color, .default-delay {
+.controls .colorpicker .random-color,
+.default-delay {
   margin: 0 !important;
 }
 
-.controls .colorpicker .random-color span , .default-delay span {
+.controls .colorpicker .random-color span,
+.default-delay span {
   padding-left: 26px !important;
   color: black;
   margin-top: -4px;
@@ -64,12 +66,19 @@ nav i {
   margin-top: 10px;
 }
 
-#custom .starting-position {
-  margin-bottom: 50px;
+#colors {
+  padding: 10px;
 }
 
-#custom .buttons {
-  margin: 30px;
+#colors .color-buttons {
+  margin-bottom: 20px;
+  display: grid;
+  grid-row-gap: 20px;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+#colors .color-buttons a {
+  margin: auto;
 }
 
 .tabs-content.carousel .carousel-item {
@@ -91,16 +100,19 @@ nav i {
   text-align: center;
 }
 
-#about i, .title {
+#about i,
+.title {
   vertical-align: middle;
   margin: 2px;
 }
 
-#about i, .coded {
+#about i,
+.coded {
   font-size: 23px;
 }
 
-#about i, .coded-by {
+#about i,
+.coded-by {
   text-align: center;
 }
 
@@ -109,13 +121,15 @@ nav i {
   overflow: auto;
 }
 
-.rainbow input.iterations, .segment-length .segment-select {
+.rainbow input.iterations,
+.segment-length .segment-select {
   width: 34px !important;
   height: 50px !important;
   font-size: 30px !important;
 }
 
-.rainbow a.red, .segment-length a.red {
+.rainbow a.red,
+.segment-length a.red {
   margin: 20px;
 }
 

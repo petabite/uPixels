@@ -39,16 +39,24 @@
     - Fill from Middle
     - Fill from Sides
     - Fill Strip
+    - Christmas
 
 ## Changelog
-|  Release |   Changes    |  Date |
-|:-------:|:-------------|:-------:|
-|v1.1       | <ul><li>New status LED indicator</li><li>New startup animation</li></ul>| 9/2/2019
-|v1.0       | <ul><li>FIRST RELEASE!!</li></ul>    |8/12/2019
+| Release | Changes                                                                     |   Date    |
+| :-----: | :-------------------------------------------------------------------------- | :-------: |
+|  v1.2   | <ul><li>New colors section</li><li>New Christmas lights animation</li></ul> | 3/22/2020 |
+|  v1.1   | <ul><li>New status LED indicator</li><li>New startup animation</li></ul>    | 9/2/2019  |
+|  v1.0   | <ul><li>FIRST RELEASE!!</li></ul>                                           | 8/12/2019 |
 
-## Screenshot
+## Screenshots
 
 <img src="https://raw.githubusercontent.com/petabite/uPixels/master/images/screenshot.png" width="400">
+
+**Animations screen**
+
+<img src="https://raw.githubusercontent.com/petabite/uPixels/master/images/colors-screen.png">
+
+**Colors screen**
 
 ## Requirements
 

@@ -2,7 +2,7 @@ import machine, uos, network, neopixel, time, urandom, ntptime
 from uWeb import uWeb, loadJSON
 
 class uPixels:
-    VERSION = '1.0'
+    VERSION = '1.2'
     def __init__(self, pin, num_leds, address="0.0.0.0", port=8000):
         self.device_name = uos.uname()[0]
         self.pin = machine.Pin(pin, machine.Pin.OUT)  # configure pin for leds

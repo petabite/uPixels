@@ -54,7 +54,7 @@
 
 **Animations screen**
 
-<img src="https://raw.githubusercontent.com/petabite/uPixels/master/images/colors-screen.png">
+<img src="https://raw.githubusercontent.com/petabite/uPixels/master/images/colors-screen.png" width="400">
 
 **Colors screen**
 

@@ -133,11 +133,12 @@ class uPixels:
             counter += 1
 
     def randomFill(self, ms=150, color=None):
-        random_positions = []
-        while len(random_positions) < self.np.n:
-            random_pos = self.randInt(0, self.np.n)
-            if random_pos not in random_positions:
-                random_positions.append(random_pos)
+        random_positions = list(range(self.np.n))
+        for position in random_positions:
+            rand_i = self.randInt(0, self.np.n)
+            temp = position
+            position = random_positions[rand_i]
+            random_positions[rand_i] = temp
         for position in random_positions:
             if color == None:
                 self.np[position] = self.randColor()

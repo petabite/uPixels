@@ -1,8 +1,10 @@
-import machine, uos, network, neopixel, time, urandom, ntptime
+import machine, uos, network, neopixel, time, urandom
 from uWeb import uWeb, loadJSON
 
+
 class uPixels:
-    VERSION = '1.2'
+    VERSION = "2.0"
+
     def __init__(self, pin, num_leds, address="0.0.0.0", port=8000):
         self.device_name = uos.uname()[0]
         self.pin = machine.Pin(pin, machine.Pin.OUT)  # configure pin for leds
@@ -10,17 +12,20 @@ class uPixels:
         self.address = address
         self.port = port
         self.animation_map = {
-            'rainbow': self.rainbow,
-            'bounce': self.bounce,
-            'chase': self.chase,
-            'rgbFade': self.rgbFade,
-            'altColors': self.altColors,
-            'randomFill': self.randomFill,
-            'fillFromMiddle': self.fillFromMiddle,
-            'fillFromSides': self.fillFromSides,
-            'fillStrip': self.fillStrip,
-            'setSegment': self.setSegment,
-            'clear': self.clear
+            "rainbow": self.rainbow,
+            "rainbowChase": self.rainbowChase,
+            "bounce": self.bounce,
+            "chase": self.chase,
+            "rgbFade": self.rgbFade,
+            "altColors": self.altColors,
+            "randomFill": self.randomFill,
+            "fillFromMiddle": self.fillFromMiddle,
+            "fillFromSides": self.fillFromSides,
+            "fillStrip": self.fillStrip,
+            "wipe": self.wipe,
+            "sparkle": self.sparkle,
+            "setSegment": self.setSegment,
+            "clear": self.clear,
         }
         self.statusLED = 5
         self.startupAnimation()
@@ -31,39 +36,52 @@ class uPixels:
     # web server methods
     def startServer(self):
         self.server = uWeb(self.address, self.port)
-        self.server.routes({
-            (uWeb.GET, "/"): self.app,
-            (uWeb.POST, '/execute'): self.execute
-        })
+        self.server.routes(
+            {(uWeb.GET, "/"): self.app, (uWeb.POST, "/execute"): self.execute}
+        )
         self.toggleServerStatusLED()
         self.server.start()
 
     def app(self):
         vars = {
-            'name' : self.device_name,
-            'upixels_ver': self.VERSION,
-            'mp_ver': uos.uname()[3],
-            'ip': network.WLAN(network.STA_IF).ifconfig()[0],
-            'host': network.WLAN(network.STA_IF).ifconfig()[0]+":"+str(self.server.port),
-            'num': self.np.n
+            "name": self.device_name,
+            "upixels_ver": self.VERSION,
+            "mp_ver": uos.uname()[3],
+            "ip": network.WLAN(network.STA_IF).ifconfig()[0],
+            "host": network.WLAN(network.STA_IF).ifconfig()[0]
+            + ":"
+            + str(self.server.port),
+            "num": self.np.n,
         }
-        self.server.render('uPixels.html', variables=vars)
+        self.server.render("uPixels.html", variables=vars)
 
     def execute(self):
         query = loadJSON(self.server.request_body)
         action = query["action"]
         params = query["params"]
-        if 'color' in params.keys():
-            if params['color'] != None:
-                params['color'] = (params['color']['r'], params['color']['g'], params['color']['b'])
-        if 'firstColor' in params.keys():
-            if params['firstColor'] != None:
-                params['firstColor'] = (params['firstColor']['r'], params['firstColor']['g'], params['firstColor']['b'])
-        if 'secondColor' in params.keys():
-            if params['secondColor'] != None:
-                params['secondColor'] = (params['secondColor']['r'], params['secondColor']['g'], params['secondColor']['b'])
+        if "color" in params.keys():
+            if params["color"] != None:
+                params["color"] = (
+                    params["color"]["r"],
+                    params["color"]["g"],
+                    params["color"]["b"],
+                )
+        if "firstColor" in params.keys():
+            if params["firstColor"] != None:
+                params["firstColor"] = (
+                    params["firstColor"]["r"],
+                    params["firstColor"]["g"],
+                    params["firstColor"]["b"],
+                )
+        if "secondColor" in params.keys():
+            if params["secondColor"] != None:
+                params["secondColor"] = (
+                    params["secondColor"]["r"],
+                    params["secondColor"]["g"],
+                    params["secondColor"]["b"],
+                )
         print("passing ", params)
-        self.animation_map[action](**params) # call the animcation method
+        self.animation_map[action](**params)  # call the animation method
 
     def setStatusLED(self, pin):
         self.statusLED = pin
@@ -75,22 +93,28 @@ class uPixels:
 
     # animation methods
     def startupAnimation(self):
-        self.chase(color=(0, 255, 155), direction='right')
-        self.chase(color=(0, 255, 155), direction='left')
+        self.chase(ms=5, color=(0, 255, 155), direction="right")
+        self.chase(ms=5, color=(0, 255, 155), direction="left")
         self.clear()
 
-    def chase(self, ms=20, color=None, direction='right'):
+    def chase(self, ms=20, color=None, segment_length=5, direction="right"):
         if color == None:
             color = self.randColor()
-        if direction == 'right':
-            led_iter = range(self.np.n)
+        if direction == "right":
+            led_iter = range(self.np.n - segment_length - 2)
         else:
-            led_iter = range(self.np.n - 1, -1, -1)
+            led_iter = range(self.np.n - segment_length - 2, -1, -1)
         for i in led_iter:
-            self.np[i] = color
+            for j in range(segment_length):
+                self.np[i + j] = color
             self.np.write()
             time.sleep_ms(ms)
-            self.np[i] = (0,0,0)
+            if direction == "right":
+                clear_iter = range(i, i + segment_length + 1)
+            else:
+                clear_iter = range(i + segment_length + 1, i, -1)
+            for i in clear_iter:
+                self.np[i] = (0, 0, 0)
 
     def fillStrip(self, ms=25, color=None):
         if color == None:
@@ -101,8 +125,8 @@ class uPixels:
                 self.np[i] = color
                 self.np.write()
                 time.sleep_ms(ms)
-                if i != count-1:
-                    self.np[i] = (0,0,0)
+                if i != count - 1:
+                    self.np[i] = (0, 0, 0)
             count -= 1
 
     def fillFromMiddle(self, ms=40, color=None):
@@ -148,7 +172,6 @@ class uPixels:
             time.sleep_ms(ms)
 
     def altColors(self, ms=125, firstColor=None, secondColor=None):
-        ntptime.settime()
         if firstColor == None:
             color = self.randColor()
         if secondColor == None:
@@ -175,50 +198,74 @@ class uPixels:
     def bounce(self, ms=20, color=False):
         while True:
             if color == False:
-                self.chase(ms, self.randColor(), 'right')
-                self.chase(ms, self.randColor(), 'left')
+                self.chase(ms=ms, color=self.randColor(), direction="right")
+                self.chase(ms=ms, color=self.randColor(), direction="left")
             else:
-                self.chase(ms, color, 'right')
-                self.chase(ms, color, 'left')
+                self.chase(ms=ms, color=color, direction="right")
+                self.chase(ms=ms, color=color, direction="left")
 
     def rgbFade(self, ms=20):
         for channel in range(3):
             for v in range(256):
                 if channel == 0:
-                    self.setSegment(list(range(self.np.n)), (v,0,0))
+                    self.setSegment(list(range(self.np.n)), (v, 0, 0))
                 if channel == 1:
-                    self.setSegment(list(range(self.np.n)), (0,v,0))
+                    self.setSegment(list(range(self.np.n)), (0, v, 0))
                 if channel == 2:
-                    self.setSegment(list(range(self.np.n)), (0,0,v))
+                    self.setSegment(list(range(self.np.n)), (0, 0, v))
                 time.sleep_ms(ms)
-            for v in range(255,-1,-1):
+            for v in range(255, -1, -1):
                 if channel == 0:
-                    self.setSegment(list(range(self.np.n)), (v,0,0))
+                    self.setSegment(list(range(self.np.n)), (v, 0, 0))
                 if channel == 1:
-                    self.setSegment(list(range(self.np.n)), (0,v,0))
+                    self.setSegment(list(range(self.np.n)), (0, v, 0))
                 if channel == 2:
-                    self.setSegment(list(range(self.np.n)), (0,0,v))
+                    self.setSegment(list(range(self.np.n)), (0, 0, v))
                 time.sleep_ms(ms)
 
-    def rainbow(self, ms=20, iterations = 2):
-        for j in range(256*iterations):
+    def rainbow(self, ms=20, iterations=2):
+        for j in range(256 * iterations):
             for i in range(self.np.n):
                 self.np[i] = self.wheel(((i * 256 // self.np.n) + j) & 255)
             self.np.write()
             time.sleep_ms(ms)
 
     def rainbowChase(self, ms=50):
-        for j in range(256):
-            for q in range(3):
-                for i in range(0, self.np.n, 3):
-                    self.np[i+q] = self.wheel((i+j) % 255)
+        while True:
+            for j in range(256):
+                for q in range(3):
+                    for i in range(0, self.np.n, 3):
+                        self.np[i + q] = self.wheel((i + j) % 255)
+                    self.np.write()
+                    time.sleep_ms(ms)
+                    for i in range(0, self.np.n, 3):
+                        self.np[i + q] = (0, 0, 0)
+
+    def wipe(self, ms=20, color=None):
+        if color == None:
+            color = self.randColor()
+        while True:
+            for i in range(self.np.n):
+                self.np[i] = color
                 self.np.write()
                 time.sleep_ms(ms)
-                for i in range(0, self.np.n, 3):
-                    self.np[i+q] = (0, 0, 0)
+            for i in range(self.np.n):
+                self.np[i] = (0, 0, 0)
+                self.np.write()
+                time.sleep_ms(ms)
+
+    def sparkle(self, ms=10, color=None):
+        if color == None:
+            color = self.randColor()
+        while True:
+            i = self.randInt(0, self.np.n)
+            self.np[i] = color
+            self.np.write()
+            time.sleep_ms(ms)
+            self.np[i] = (0, 0, 0)
 
     def clear(self):
-        self.setSegment(list(range(self.np.n)), (0,0,0))
+        self.setSegment(list(range(self.np.n)), (0, 0, 0))
 
     # helper methods
     def setSegment(self, segment_of_leds, color):
@@ -234,7 +281,7 @@ class uPixels:
             return upper - 1
 
     def randColor(self):
-        return (self.randInt(0,256),self.randInt(0,256),self.randInt(0,256))
+        return (self.randInt(0, 256), self.randInt(0, 256), self.randInt(0, 256))
 
     def wheel(self, pos):
         if pos < 85:

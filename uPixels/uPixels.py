@@ -53,7 +53,7 @@ class uPixels:
             + str(self.server.port),
             "num": self.np.n,
         }
-        self.server.render("uPixels.html", variables=vars)
+        self.server.render("uPixels.html", layout=False, variables=vars)
 
     def execute(self):
         query = loadJSON(self.server.request_body)

@@ -1,5 +1,5 @@
 var brightnessSlider, delaySlider, startingPositionSlider, segmentLengthSlider
-$(document).ready(function() {
+$(document).ready(function () {
   $("#colorpicker").spectrum({
     color: "rgb(0, 255, 155)",
     preferredFormat: 'rgb',
@@ -12,14 +12,14 @@ $(document).ready(function() {
     showButtons: false,
     showInput: true,
     containerClassName: 'second-colorpicker',
-    change: function(color) {
+    change: function (color) {
       console.log($(this).spectrum('get').toRgb());
     }
   });
 
-  $('.color-buttons').children().each(function() {
+  $('.color-buttons').children().each(function () {
     color_array = $(this).data('color')
-    $(this).css('background-color', 'rgb('+ color_array[0] + ',' + color_array[1] + ','+ color_array[2] + ')')
+    $(this).css('background-color', 'rgb(' + color_array[0] + ',' + color_array[1] + ',' + color_array[2] + ')')
     $(this).click(function () {
       color_array = $(this).data('color')
       color = {
@@ -50,7 +50,7 @@ $(document).ready(function() {
     })
   });
 
-  delaySlider.noUiSlider.on('update', function(delay) {
+  delaySlider.noUiSlider.on('update', function (delay) {
     $('#delay-label').text(delay);
   })
 
@@ -68,11 +68,11 @@ $(document).ready(function() {
     })
   });
 
-  brightnessSlider.noUiSlider.on('update', function(brightness) {
+  brightnessSlider.noUiSlider.on('update', function (brightness) {
     $('#brightness-label').text(brightness);
   })
 
-  $('#u-logo').on('click touchstart', function() {
+  $('#u-logo').on('click touchstart', function () {
     location.reload()
   })
 });
@@ -136,13 +136,22 @@ function execute(action, params = {}) {
   var xhr = new XMLHttpRequest();
   xhr.open("POST", '/execute', true);
   xhr.setRequestHeader("Content-Type", "application/json");
-  xhr.send(JSON.stringify({'action': action, 'params': params}));
+  xhr.send(JSON.stringify({
+    'action': action,
+    'params': params
+  }));
 }
 
 function rainbow() {
   execute('rainbow', {
     'ms': getDelaySelection(),
     'iterations': Number($('.rainbow .iterations').val())
+  })
+}
+
+function rainbowChase() {
+  execute('rainbowChase', {
+    'ms': getDelaySelection(),
   })
 }
 
@@ -217,8 +226,16 @@ function fillStrip() {
 function christmas() {
   execute('altColors', {
     'ms': 300,
-    'firstColor': {'r': 0,'g': 255,'b': 0},
-    'secondColor': {'r': 255,'g': 13,'b': 13}
+    'firstColor': {
+      'r': 0,
+      'g': 255,
+      'b': 0
+    },
+    'secondColor': {
+      'r': 255,
+      'g': 13,
+      'b': 13
+    }
   })
 }
 

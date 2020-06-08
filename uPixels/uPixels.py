@@ -231,15 +231,14 @@ class uPixels:
             time.sleep_ms(ms)
 
     def rainbowChase(self, ms=50):
-        while True:
-            for j in range(256):
-                for q in range(3):
-                    for i in range(0, self.np.n, 3):
-                        self.np[i + q] = self.wheel((i + j) % 255)
-                    self.np.write()
-                    time.sleep_ms(ms)
-                    for i in range(0, self.np.n, 3):
-                        self.np[i + q] = (0, 0, 0)
+        for j in range(256):
+            for q in range(3):
+                for i in range(0, self.np.n, 3):
+                    self.np[i + q] = self.wheel((i + j) % 255)
+                self.np.write()
+                time.sleep_ms(ms)
+                for i in range(0, self.np.n, 3):
+                    self.np[i + q] = (0, 0, 0)
 
     def wipe(self, ms=20, color=None):
         if color == None:

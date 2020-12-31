@@ -24,6 +24,7 @@ class uPixels:
             "fillStrip": self.fillStrip,
             "wipe": self.wipe,
             "sparkle": self.sparkle,
+            "setStrip": self.setStrip,
             "setSegment": self.setSegment,
             "clear": self.clear,
         }
@@ -208,19 +209,19 @@ class uPixels:
         for channel in range(3):
             for v in range(256):
                 if channel == 0:
-                    self.setSegment(list(range(self.np.n)), (v, 0, 0))
+                    self.setStrip((v, 0, 0))
                 if channel == 1:
-                    self.setSegment(list(range(self.np.n)), (0, v, 0))
+                    self.setStrip((0, v, 0))
                 if channel == 2:
-                    self.setSegment(list(range(self.np.n)), (0, 0, v))
+                    self.setStrip((0, 0, v))
                 time.sleep_ms(ms)
             for v in range(255, -1, -1):
                 if channel == 0:
-                    self.setSegment(list(range(self.np.n)), (v, 0, 0))
+                    self.setStrip((v, 0, 0))
                 if channel == 1:
-                    self.setSegment(list(range(self.np.n)), (0, v, 0))
+                    self.setStrip((0, v, 0))
                 if channel == 2:
-                    self.setSegment(list(range(self.np.n)), (0, 0, v))
+                    self.setStrip((0, 0, v))
                 time.sleep_ms(ms)
 
     def rainbow(self, ms=20, iterations=2):
@@ -265,9 +266,12 @@ class uPixels:
             self.np[i] = (0, 0, 0)
 
     def clear(self):
-        self.setSegment(list(range(self.np.n)), (0, 0, 0))
+        self.setStrip((0, 0, 0))
 
     # helper methods
+    def setStrip(self, color):
+        self.setSegment(list(range(self.np.n)), color)
+
     def setSegment(self, segment_of_leds, color):
         for led in segment_of_leds:
             self.np[led] = color

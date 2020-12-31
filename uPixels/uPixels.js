@@ -27,7 +27,7 @@ $(document).ready(function () {
         'g': Math.round(color_array[1] * getBrightness()),
         'b': Math.round(color_array[2] * getBrightness())
       }
-      setStripToColor(color)
+      setStrip(color)
     })
   })
 
@@ -162,6 +162,20 @@ function bounce() {
   })
 }
 
+function sparkle() {
+  execute('sparkle', {
+    'ms': getDelaySelection(),
+    'color': getColorSelection()
+  })
+}
+
+function wipe() {
+  execute('wipe', {
+    'ms': getDelaySelection(),
+    'color': getColorSelection()
+  })
+}
+
 function chase() {
   if ($('.chase #left').is(":checked")) {
     direction = 'left'
@@ -239,9 +253,8 @@ function christmas() {
   })
 }
 
-function setStripToColor(color) {
-  execute('setSegment', {
-    "segment_of_leds": Array.from(Array(num_leds).keys()),
+function setStrip(color) {
+  execute('setStrip', {
     "color": color
   })
 }

@@ -82,7 +82,7 @@ nav i {
 }
 
 .tabs-content.carousel .carousel-item {
-  height: 500px !important;
+  height: 100% !important;
 }
 
 .options {
@@ -117,7 +117,7 @@ nav i {
 }
 
 .tabs-content.carousel.carousel-slider {
-  height: 600px !important;
+  height: 100% !important;
   overflow: auto;
 }
 

@@ -1,4 +1,4 @@
-import machine, uos, network, neopixel, time, urandom
+import machine, uos, network, neopixel, time, urandom, sys
 from uWeb import uWeb, loadJSON
 
 
@@ -57,32 +57,41 @@ class uPixels:
         self.server.render("uPixels.html", layout=False, variables=vars)
 
     def execute(self):
-        query = loadJSON(self.server.request_body)
-        action = query["action"]
-        params = query["params"]
-        if "color" in params.keys():
-            if params["color"] != None:
-                params["color"] = (
-                    params["color"]["r"],
-                    params["color"]["g"],
-                    params["color"]["b"],
-                )
-        if "firstColor" in params.keys():
-            if params["firstColor"] != None:
-                params["firstColor"] = (
-                    params["firstColor"]["r"],
-                    params["firstColor"]["g"],
-                    params["firstColor"]["b"],
-                )
-        if "secondColor" in params.keys():
-            if params["secondColor"] != None:
-                params["secondColor"] = (
-                    params["secondColor"]["r"],
-                    params["secondColor"]["g"],
-                    params["secondColor"]["b"],
-                )
-        print("passing ", params)
-        self.animation_map[action](**params)  # call the animation method
+        try:
+            query = loadJSON(self.server.request_body)
+            action = query["action"]
+            params = query["params"]
+            if action not in self.animation_map.keys():
+                self.server.sendStatus(self.server.BAD_REQUEST)
+                self.server.sendBody(b"%s is not a valid action!" % (action))
+                return
+            if "color" in params.keys():
+                if params["color"] != None:
+                    params["color"] = (
+                        params["color"]["r"],
+                        params["color"]["g"],
+                        params["color"]["b"],
+                    )
+            if "firstColor" in params.keys():
+                if params["firstColor"] != None:
+                    params["firstColor"] = (
+                        params["firstColor"]["r"],
+                        params["firstColor"]["g"],
+                        params["firstColor"]["b"],
+                    )
+            if "secondColor" in params.keys():
+                if params["secondColor"] != None:
+                    params["secondColor"] = (
+                        params["secondColor"]["r"],
+                        params["secondColor"]["g"],
+                        params["secondColor"]["b"],
+                    )
+            self.server.sendStatus(self.server.OK)
+            self.animation_map[action](**params)  # call the animation method
+        except Exception as e:
+            self.server.sendStatus(self.server.BAD_REQUEST)
+            self.server.sendBody(b"An error occurred: %s!" % (str(e)))
+            sys.print_exception(e)
 
     def setStatusLED(self, pin):
         self.statusLED = pin

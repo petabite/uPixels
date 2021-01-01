@@ -227,13 +227,14 @@ Serves the UI using the uWeb server on specified address and port
 
 -----
 
-## `uPixels.chase(ms=20, color=None, direction='right')`
+## `uPixels.chase(ms=20, color=None, segment_length=5, direction='right')`
 
   ###### Description
   Chase animation going left or right
   ###### Parameters
   - ms - (int) delay time in milliseconds. Default: 20
   - color - (tuple) RGB color for animation in the format (r, g, b). Default: None(random color)
+  - segment_length - (int) number of LEDs to be used. Default: 5
   - direction - (str) direction of animation; 'left' or 'right'. Default: 'right'
 
 -----
@@ -308,7 +309,7 @@ Serves the UI using the uWeb server on specified address and port
 
 -----
 
-## `uPixels.rainbow(ms=20, iterations = 2)`
+## `uPixels.rainbow(ms=20, iterations=2)`
 
   ###### Description
   Cycle of colors in rainbow over entire strip
@@ -327,6 +328,26 @@ Serves the UI using the uWeb server on specified address and port
 
 -----
 
+## `uPixels.wipe(ms=20, color=None)`
+
+  ###### Description
+  Wipe animation
+  ###### Parameters
+  - ms - (int) delay time in milliseconds. Default: 20
+  - color - (tuple) RGB color for animation in the format (r, g, b). Default: None(random color)
+
+-----
+
+## `uPixels.sparkle(ms=10, color=None)`
+
+  ###### Description
+  Sparkle animation
+  ###### Parameters
+  - ms - (int) delay time in milliseconds. Default: 10
+  - color - (tuple) RGB color for animation in the format (r, g, b). Default: None(random color)
+
+-----
+
 ## `uPixels.clear()`
 
   ###### Description
@@ -336,13 +357,22 @@ Serves the UI using the uWeb server on specified address and port
 
 ## Helper Methods
 
+## `uPixels.setStrip(color)`
+
+  ###### Description
+  Set entire strip to a color
+  ###### Parameters
+  - color - (tuple) RGB color in the format (r, g, b).
+
+-----
+
 ## `uPixels.setSegment(segment_of_leds, color)`
 
   ###### Description
   Set specified segments of LEDS to a color
   ###### Parameters
   - segment_of_leds - (list) positions of each individual LED to be set(Ex: `[1, 4, 10]` will set LEDS @ index 1, 4, and 10 to the color).
-  - color - (tuple) RGB color for animation in the format (r, g, b).
+  - color - (tuple) RGB color in the format (r, g, b).
 
 -----
 

@@ -49,6 +49,7 @@
 ## Changelog
 | Release | Changes                                                                     |   Date    |
 | :-----: | :-------------------------------------------------------------------------- | :-------: |
+|  v2.0   | <ul><li>Offical release of /execute API</li><li>add setStrip method</li><li>New rainbow chase + wipe + sparkle animations</li><li>Segment length on chase animation</li></ul> | 12/31/2020 |
 |  v1.2   | <ul><li>New colors section</li><li>New Christmas lights animation</li></ul> | 3/22/2020 |
 |  v1.1   | <ul><li>New status LED indicator</li><li>New startup animation</li></ul>    | 9/2/2019  |
 |  v1.0   | <ul><li>FIRST RELEASE!!</li></ul>                                           | 8/12/2019 |

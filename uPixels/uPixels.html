@@ -2,7 +2,8 @@
   <title>uPixels</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.js"></script>
   <script src="http://materializecss.com/extras/noUiSlider/nouislider.js"></script>
@@ -16,8 +17,10 @@
 
   <meta name="apple-mobile-web-app-title" content="uPixels">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/petabite/uPixels/master/images/apple-icon-114x114px.png">
-  <link rel="apple-touch-startup-image" href="https://raw.githubusercontent.com/petabite/uPixels/master/images/launchscreen.png">
+  <link rel="apple-touch-icon"
+    href="https://raw.githubusercontent.com/petabite/uPixels/master/images/apple-icon-114x114px.png">
+  <link rel="apple-touch-startup-image"
+    href="https://raw.githubusercontent.com/petabite/uPixels/master/images/launchscreen.png">
   <link rel="shortcut icon" href="https://raw.githubusercontent.com/petabite/uPixels/master/images/favicon.ico">
   <meta name="apple-mobile-web-app-status-bar-style" content="translucent black">
   <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' />
@@ -27,7 +30,8 @@
   <div class="navbar-fixed">
     <nav class="teal lighten-1">
       <div class="nav-wrapper">
-        <a class="brand-logo center" id="u-logo" onclick="location.reload()"><i class="material-icons">developer_board</i>uPixels</a>
+        <a class="brand-logo center" id="u-logo" onclick="location.reload()"><i
+            class="material-icons">developer_board</i>uPixels</a>
       </div>
     </nav>
   </div>
@@ -40,13 +44,13 @@
       <form>
         <p class="random-color">
           <label>
-            <input type="checkbox" id="random-color-checkbox" onchange="togglePickers();"/>
+            <input type="checkbox" id="random-color-checkbox" onchange="togglePickers();" />
             <span>Random Color</span>
           </label>
         </p>
         <p class="default-delay">
           <label>
-            <input type="checkbox" id="default-delay-checkbox" checked="checked" onchange="toggleDelaySlider();"/>
+            <input type="checkbox" id="default-delay-checkbox" checked="checked" onchange="toggleDelaySlider();" />
             <span>Default Delay</span>
           </label>
         </p>
@@ -61,16 +65,20 @@
         <h6>Delay: <span id="delay-label">10</span> ms</h6>
         <div id="delay-slider" class="slider"></div>
       </div>
-      <a class="waves-effect waves-light btn-small red clear" onclick="clearStrip();"><i class="material-icons left">clear</i>clear strip</a>
+      <a class="waves-effect waves-light btn-small red clear" onclick="clearStrip();"><i
+          class="material-icons left">clear</i>clear strip</a>
     </div>
   </div>
 
   <div class="row">
     <div class="col s12">
       <ul class="tabs">
-        <li class="tab col s6"><a class="active" href="#animations"><i class="material-icons">lightbulb_outline</i><span class="tab-title">animations</span></a></li>
-        <li class="tab col s5"><a href="#colors"><i class="material-icons">color_lens</i><span class="tab-title">colors</span></a></li>
-        <li class="tab col s4"><a href="#about"><i class="material-icons">info_outline</i><span class="tab-title">about</span></a></li>
+        <li class="tab col s6"><a class="active" href="#animations"><i class="material-icons">lightbulb_outline</i><span
+              class="tab-title">animations</span></a></li>
+        <li class="tab col s5"><a href="#colors"><i class="material-icons">color_lens</i><span
+              class="tab-title">colors</span></a></li>
+        <li class="tab col s4"><a href="#about"><i class="material-icons">info_outline</i><span
+              class="tab-title">about</span></a></li>
       </ul>
     </div>
     <div id="animations" class="col s12">
@@ -78,16 +86,41 @@
         <li class="rainbow">
           <div class="collapsible-header"><i class="material-icons">looks</i>Rainbow</div>
           <div class="collapsible-body center-align">
-            <a class="btn-floating btn-small waves-effect waves-light red" onclick="changeVal('.rainbow .iterations', -1)"><i class="material-icons">remove</i></a>
+            <a class="btn-floating btn-small waves-effect waves-light red"
+              onclick="changeVal('.rainbow .iterations', -1)"><i class="material-icons">remove</i></a>
             <input type="number" class="iterations" value="2">
-            <a class="btn-floating btn-small waves-effect waves-light red" onclick="changeVal('.rainbow .iterations', 1)"><i class="material-icons">add</i></a><br>
-            <a class="waves-effect waves-light btn-floating valign-middle play" onclick="rainbow();"><i class="material-icons">play_arrow</i></a>
+            <a class="btn-floating btn-small waves-effect waves-light red"
+              onclick="changeVal('.rainbow .iterations', 1)"><i class="material-icons">add</i></a><br>
+            <a class="waves-effect waves-light btn-floating valign-middle play" onclick="rainbow();"><i
+                class="material-icons">play_arrow</i></a>
+          </div>
+        </li>
+        <li class="rainbowChase">
+          <div class="collapsible-header"><i class="material-icons">looks</i>Rainbow Chase</div>
+          <div class="collapsible-body center-align">
+            <a class="waves-effect waves-light btn-floating valign-middle play" onclick="rainbowChase();"><i
+                class="material-icons">play_arrow</i></a>
           </div>
         </li>
         <li class="bounce">
           <div class="collapsible-header"><i class="material-icons">call_missed</i>Bounce</div>
           <div class="collapsible-body center-align">
-            <a class="waves-effect waves-light btn-floating valign-middle play" onclick="bounce();"><i class="material-icons">play_arrow</i></a>
+            <a class="waves-effect waves-light btn-floating valign-middle play" onclick="bounce();"><i
+                class="material-icons">play_arrow</i></a>
+          </div>
+        </li>
+        <li class="sparkle">
+          <div class="collapsible-header"><i class="material-icons">auto_graph</i>Sparkle</div>
+          <div class="collapsible-body center-align">
+            <a class="waves-effect waves-light btn-floating valign-middle play" onclick="sparkle();"><i
+                class="material-icons">play_arrow</i></a>
+          </div>
+        </li>
+        <li class="wipe">
+          <div class="collapsible-header"><i class="material-icons">read_more</i>Wipe</div>
+          <div class="collapsible-body center-align">
+            <a class="waves-effect waves-light btn-floating valign-middle play" onclick="wipe();"><i
+                class="material-icons">play_arrow</i></a>
           </div>
         </li>
         <li class="chase">
@@ -108,13 +141,15 @@
                 </label>
               </p>
             </form>
-            <a class="waves-effect waves-light btn-floating valign-middle" onclick="chase();"><i class="material-icons">play_arrow</i></a>
+            <a class="waves-effect waves-light btn-floating valign-middle" onclick="chase();"><i
+                class="material-icons">play_arrow</i></a>
           </div>
         </li>
         <li class="rgbFade">
           <div class="collapsible-header"><i class="material-icons">toll</i>RGB Fade</div>
           <div class="collapsible-body center-align">
-            <a class="waves-effect waves-light btn-floating valign-middle" onclick="rgbFade();"><i class="material-icons">play_arrow</i></a>
+            <a class="waves-effect waves-light btn-floating valign-middle" onclick="rgbFade();"><i
+                class="material-icons">play_arrow</i></a>
           </div>
         </li>
         <li class="altColors">
@@ -122,37 +157,43 @@
           <div class="collapsible-body center-align">
             <h5>Select Second Color:</h5>
             <input type="text" id="second-colorpicker"><br>
-            <a class="waves-effect waves-light btn-floating valign-middle" onclick="altColors();"><i class="material-icons">play_arrow</i></a>
+            <a class="waves-effect waves-light btn-floating valign-middle" onclick="altColors();"><i
+                class="material-icons">play_arrow</i></a>
           </div>
         </li>
         <li class="randomFill">
           <div class="collapsible-header"><i class="material-icons">blur_on</i>Random Fill</div>
           <div class="collapsible-body center-align">
-            <a class="waves-effect waves-light btn-floating valign-middle" onclick="randomFill();"><i class="material-icons">play_arrow</i></a>
+            <a class="waves-effect waves-light btn-floating valign-middle" onclick="randomFill();"><i
+                class="material-icons">play_arrow</i></a>
           </div>
         </li>
         <li class="fillFromMiddle">
           <div class="collapsible-header"><i class="material-icons">code</i>Fill from Middle</div>
           <div class="collapsible-body center-align">
-            <a class="waves-effect waves-light btn-floating valign-middle" onclick="fillFromMiddle();"><i class="material-icons">play_arrow</i></a>
+            <a class="waves-effect waves-light btn-floating valign-middle" onclick="fillFromMiddle();"><i
+                class="material-icons">play_arrow</i></a>
           </div>
         </li>
         <li class="fillFromSides">
           <div class="collapsible-header"><i class="material-icons">compare_arrows</i>Fill from Sides</div>
           <div class="collapsible-body center-align">
-            <a class="waves-effect waves-light btn-floating valign-middle" onclick="fillFromSides();"><i class="material-icons">play_arrow</i></a>
+            <a class="waves-effect waves-light btn-floating valign-middle" onclick="fillFromSides();"><i
+                class="material-icons">play_arrow</i></a>
           </div>
         </li>
         <li class="fillStrip">
           <div class="collapsible-header"><i class="material-icons">fast_forward</i>Fill Strip</div>
           <div class="collapsible-body center-align">
-            <a class="waves-effect waves-light btn-floating valign-middle" onclick="fillStrip();"><i class="material-icons">play_arrow</i></a>
+            <a class="waves-effect waves-light btn-floating valign-middle" onclick="fillStrip();"><i
+                class="material-icons">play_arrow</i></a>
           </div>
         </li>
         <li class="christmas">
           <div class="collapsible-header"><i class="material-icons">star_half</i>Christmas</div>
           <div class="collapsible-body center-align">
-            <a class="waves-effect waves-light btn-floating valign-middle" onclick="christmas();"><i class="material-icons">play_arrow</i></a>
+            <a class="waves-effect waves-light btn-floating valign-middle" onclick="christmas();"><i
+                class="material-icons">play_arrow</i></a>
           </div>
         </li>
       </ul>
@@ -160,9 +201,9 @@
     <div id="colors" class="col s12">
       <div class="color-buttons">
         <a class="btn-floating btn-large waves-effect waves-light" data-color='[205, 10, 10]'></a>
-        <a class="btn-floating btn-large waves-effect waves-light" data-color='[230, 32, 32]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[238, 51, 91]'></a>
         <a class="btn-floating btn-large waves-effect waves-light" data-color='[255, 0, 0]'></a>
-        <a class="btn-floating btn-large waves-effect waves-light" data-color='[255, 18, 18]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[255, 50, 50]'></a>
 
         <a class="btn-floating btn-large waves-effect waves-light" data-color='[255, 43, 0]'></a>
         <a class="btn-floating btn-large waves-effect waves-light" data-color='[205, 55, 10]'></a>
@@ -201,55 +242,54 @@
       </div>
       <h6 class="center-align">Set strip to color picker selection:</h6>
       <div class="buttons center-align">
-        <a class="btn-floating btn-large waves-effect waves-light blue" onclick="setStripToColor(getColorSelection());"><i class="material-icons">play_arrow</i></a>
+        <a class="btn-floating btn-large waves-effect waves-light blue"
+          onclick="setStripToColor(getColorSelection());"><i class="material-icons">play_arrow</i></a>
       </div>
-      </div>
-    </div>
-    <div id="about" class="col s12">
-      <h2><i class="material-icons">info_outline</i><span class="title">About</span></h2>
-      <table class="striped centered">
-        <tbody>
-          <tr>
-            <td>Device Name:</td>
-            <td>{{name}}</td>
-          </tr>
-          <tr>
-            <td>uPixels Version:</td>
-            <td>{{upixels_ver}}</td>
-          </tr>
-          <tr>
-            <td>MicroPython Version:</td>
-            <td>{{mp_ver}}</td>
-          </tr>
-          <tr>
-            <td>IP Address:</td>
-            <td>{{ip}}</td>
-          </tr>
-          <tr>
-            <td>App Hosted at:</td>
-            <td>{{host}}</td>
-          </tr>
-          <tr>
-            <td>Number of LEDS:</td>
-            <td>{{num}}</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <h5>Credits</h5>
-      <ul>
-        <li>MaterializeCSS</li>
-        <li>Google Material Design Icons</li>
-        <li>Spectrum.js</li>
-        <li>noUiSlider.js</li>
-        <li>MicroPython</li>
-        <li>jQuery</li>
-        <li>jgarff - rpi_ws281x</li>
-      </ul>
-      <p class="coded-by"><i class="material-icons coded">code</i> by Philip Z (<a href="https://github.com/petabite">petabite</a>)</p>
     </div>
   </div>
+  <div id="about" class="col s12">
+    <h2><i class="material-icons">info_outline</i><span class="title">About</span></h2>
+    <table class="striped centered">
+      <tbody>
+        <tr>
+          <td>Device Name:</td>
+          <td>{{name}}</td>
+        </tr>
+        <tr>
+          <td>uPixels Version:</td>
+          <td>{{upixels_ver}}</td>
+        </tr>
+        <tr>
+          <td>MicroPython Version:</td>
+          <td>{{mp_ver}}</td>
+        </tr>
+        <tr>
+          <td>IP Address:</td>
+          <td>{{ip}}</td>
+        </tr>
+        <tr>
+          <td>App Hosted at:</td>
+          <td>{{host}}</td>
+        </tr>
+        <tr>
+          <td>Number of LEDS:</td>
+          <td>{{num}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h5>Credits</h5>
+    <ul>
+      <li>MaterializeCSS</li>
+      <li>Google Material Design Icons</li>
+      <li>Spectrum.js</li>
+      <li>noUiSlider.js</li>
+      <li>MicroPython</li>
+      <li>jQuery</li>
+      <li>jgarff - rpi_ws281x</li>
+    </ul>
+    <p class="coded-by"><i class="material-icons coded">code</i> by Philip Z (<a
+        href="https://github.com/petabite">petabite</a>)</p>
+  </div>
+  </div>
 </body>
-<script>
-  var num_leds = {{num}};
-</script>

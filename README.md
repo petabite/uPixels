@@ -13,10 +13,11 @@
 - [Schematic](#schematic)
 - [Setup](#setup)
 - [Quick Start](#quick-start)
+- [REST API Reference](#rest-api-reference)
 - [Documentation](#documentation)
 - [Additional Resources](#additional-resources)
 - [Tested On](#tested-on)
-- [Credits](#credits)
+- [Special Thanks](#special-thanks)
 
 
 ## Features
@@ -24,14 +25,18 @@
 - Up and running in just three lines of code!
 - User-friendly interface hosted from the micro-controller itself!
 - Complete control over animations from delay time, color, brightness
-- Completely customizable animations and user interface which is written in just Python/HTML/CSS/JS!
-- Use with the user interface or just use the Animations API
+- Completely customizable animations and user interface which is written with just Python/HTML/CSS/JS!
+- Use with the user interface or programmatically using the Animations API
+- Call animations from the network!
 - Support for optional separate status indicator LED
 
     ### Out of the Box Animations:
 
     - Rainbow
+    - Rainbow Chase
     - Bounce
+    - Sparkle
+    - Wipe
     - Chase
     - RGB Fade
     - Alternating Colors
@@ -44,6 +49,7 @@
 ## Changelog
 | Release | Changes                                                                     |   Date    |
 | :-----: | :-------------------------------------------------------------------------- | :-------: |
+|  v2.0   | <ul><li>Offical release of /execute API</li><li>add setStrip method</li><li>New rainbow chase + wipe + sparkle animations</li><li>Segment length on chase animation</li></ul> | 12/31/2020 |
 |  v1.2   | <ul><li>New colors section</li><li>New Christmas lights animation</li></ul> | 3/22/2020 |
 |  v1.1   | <ul><li>New status LED indicator</li><li>New startup animation</li></ul>    | 9/2/2019  |
 |  v1.0   | <ul><li>FIRST RELEASE!!</li></ul>                                           | 8/12/2019 |
@@ -137,6 +143,78 @@ pixels.randomFill(ms=150, color=None) # random fill animation with 150ms delay a
 
 #### See the docs below for usage of all the μPixels animations!
 
+-----
+
+## REST API Reference
+
+After running `uPixels.startServer()`, the following routes will be available at the address and port set when uPixels was initialized(Default: 0.0.0.0:8000).
+
+### `GET /`
+
+#### *Response*
+
+- Returns uPixels user interface(works best on a mobile browser)
+- Add this page to your phone's homescreen using Chrome(Android) or Safari(iOS) for an app-like experience([tutorial](https://www.howtogeek.com/196087/how-to-add-websites-to-the-home-screen-on-any-smartphone-or-tablet/))!
+### `POST /execute`
+
+- Run animations from the Animations API and other methods via a POST request to this route from any device connected on the same network as your microcontroller.
+- All animations from the Animations API can be called from here as well as the `setStrip`, `setSegment`, and `clear` methods.
+- BEWARE of infinite loop animations. Once you start them, they can't be stopped unless you do a hard reset!
+  
+#### *Parameters*
+- This route takes a JSON body with an `action` and `params` to be passed to the `action`
+- *Required:*
+  - `action` - (string) name of function/animation to be run(name must be same as method names in documentation)
+  - `params` - (object) named params to be passed to the function(if no params, pass an empty object)
+    - When color is needed, pass a `color` object with `r`, `g`, `b` values, such as
+      ```JSON
+      {
+        ...
+        "color" : {
+          "r": 100,
+          "g": 100,
+          "b": 100,
+        }
+      }
+    - NOTE: For the `altColors` animation, pass a `firstColor` and `secondColor` object
+
+*Ex: To run the `rainbow` animation(w/ params), send a JSON body like this:* 
+```JSON
+{
+	"action": "rainbow",
+	"params": {
+		"ms": 10,
+		"iterations": 1
+	}
+}
+```
+
+*Ex: To run `setStrip`, which takes a color, send a JSON body like this:* 
+```JSON
+{
+	"action": "setStrip",
+	"params": {
+		"color": {
+			"r": 255,
+			"g": 50,
+			"b": 50
+		}
+	}
+}
+```
+
+*Ex: To run `clear`, which takes no params, send a JSON body like this:* 
+```JSON
+{
+	"action": "clear",
+	"params": {}
+}
+```
+
+#### *Response*
+- On success, the response will have a `200` status with no body.
+- On error, the response will have a `400` status and will return an error message. Check the MicroPython WebREPL for a more detailed error message!
+
 ## Documentation
 
 ### Objects
@@ -227,13 +305,14 @@ Serves the UI using the uWeb server on specified address and port
 
 -----
 
-## `uPixels.chase(ms=20, color=None, direction='right')`
+## `uPixels.chase(ms=20, color=None, segment_length=5, direction='right')`
 
   ###### Description
   Chase animation going left or right
   ###### Parameters
   - ms - (int) delay time in milliseconds. Default: 20
   - color - (tuple) RGB color for animation in the format (r, g, b). Default: None(random color)
+  - segment_length - (int) number of LEDs to be used. Default: 5
   - direction - (str) direction of animation; 'left' or 'right'. Default: 'right'
 
 -----
@@ -308,7 +387,7 @@ Serves the UI using the uWeb server on specified address and port
 
 -----
 
-## `uPixels.rainbow(ms=20, iterations = 2)`
+## `uPixels.rainbow(ms=20, iterations=2)`
 
   ###### Description
   Cycle of colors in rainbow over entire strip
@@ -327,6 +406,26 @@ Serves the UI using the uWeb server on specified address and port
 
 -----
 
+## `uPixels.wipe(ms=20, color=None)`
+
+  ###### Description
+  Wipe animation
+  ###### Parameters
+  - ms - (int) delay time in milliseconds. Default: 20
+  - color - (tuple) RGB color for animation in the format (r, g, b). Default: None(random color)
+
+-----
+
+## `uPixels.sparkle(ms=10, color=None)`
+
+  ###### Description
+  Sparkle animation
+  ###### Parameters
+  - ms - (int) delay time in milliseconds. Default: 10
+  - color - (tuple) RGB color for animation in the format (r, g, b). Default: None(random color)
+
+-----
+
 ## `uPixels.clear()`
 
   ###### Description
@@ -336,13 +435,22 @@ Serves the UI using the uWeb server on specified address and port
 
 ## Helper Methods
 
+## `uPixels.setStrip(color)`
+
+  ###### Description
+  Set entire strip to a color
+  ###### Parameters
+  - color - (tuple) RGB color in the format (r, g, b).
+
+-----
+
 ## `uPixels.setSegment(segment_of_leds, color)`
 
   ###### Description
   Set specified segments of LEDS to a color
   ###### Parameters
   - segment_of_leds - (list) positions of each individual LED to be set(Ex: `[1, 4, 10]` will set LEDS @ index 1, 4, and 10 to the color).
-  - color - (tuple) RGB color for animation in the format (r, g, b).
+  - color - (tuple) RGB color in the format (r, g, b).
 
 -----
 
@@ -388,7 +496,7 @@ Serves the UI using the uWeb server on specified address and port
 - NodeMCU v3 (ESP8266)
 - WS2812b Individually Addressable RGB LEDs
 
-## Credits
+## Special Thanks
 - MaterializeCSS
 - Google Material Design Icons
 - Spectrum.js

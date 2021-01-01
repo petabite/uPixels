@@ -1,5 +1,5 @@
 var brightnessSlider, delaySlider, startingPositionSlider, segmentLengthSlider
-$(document).ready(function() {
+$(document).ready(function () {
   $("#colorpicker").spectrum({
     color: "rgb(0, 255, 155)",
     preferredFormat: 'rgb',
@@ -12,14 +12,14 @@ $(document).ready(function() {
     showButtons: false,
     showInput: true,
     containerClassName: 'second-colorpicker',
-    change: function(color) {
+    change: function (color) {
       console.log($(this).spectrum('get').toRgb());
     }
   });
 
-  $('.color-buttons').children().each(function() {
+  $('.color-buttons').children().each(function () {
     color_array = $(this).data('color')
-    $(this).css('background-color', 'rgb('+ color_array[0] + ',' + color_array[1] + ','+ color_array[2] + ')')
+    $(this).css('background-color', 'rgb(' + color_array[0] + ',' + color_array[1] + ',' + color_array[2] + ')')
     $(this).click(function () {
       color_array = $(this).data('color')
       color = {
@@ -27,7 +27,7 @@ $(document).ready(function() {
         'g': Math.round(color_array[1] * getBrightness()),
         'b': Math.round(color_array[2] * getBrightness())
       }
-      setStripToColor(color)
+      setStrip(color)
     })
   })
 
@@ -50,7 +50,7 @@ $(document).ready(function() {
     })
   });
 
-  delaySlider.noUiSlider.on('update', function(delay) {
+  delaySlider.noUiSlider.on('update', function (delay) {
     $('#delay-label').text(delay);
   })
 
@@ -68,11 +68,11 @@ $(document).ready(function() {
     })
   });
 
-  brightnessSlider.noUiSlider.on('update', function(brightness) {
+  brightnessSlider.noUiSlider.on('update', function (brightness) {
     $('#brightness-label').text(brightness);
   })
 
-  $('#u-logo').on('click touchstart', function() {
+  $('#u-logo').on('click touchstart', function () {
     location.reload()
   })
 });
@@ -136,7 +136,10 @@ function execute(action, params = {}) {
   var xhr = new XMLHttpRequest();
   xhr.open("POST", '/execute', true);
   xhr.setRequestHeader("Content-Type", "application/json");
-  xhr.send(JSON.stringify({'action': action, 'params': params}));
+  xhr.send(JSON.stringify({
+    'action': action,
+    'params': params
+  }));
 }
 
 function rainbow() {
@@ -146,8 +149,28 @@ function rainbow() {
   })
 }
 
+function rainbowChase() {
+  execute('rainbowChase', {
+    'ms': getDelaySelection(),
+  })
+}
+
 function bounce() {
   execute('bounce', {
+    'ms': getDelaySelection(),
+    'color': getColorSelection()
+  })
+}
+
+function sparkle() {
+  execute('sparkle', {
+    'ms': getDelaySelection(),
+    'color': getColorSelection()
+  })
+}
+
+function wipe() {
+  execute('wipe', {
     'ms': getDelaySelection(),
     'color': getColorSelection()
   })
@@ -217,14 +240,21 @@ function fillStrip() {
 function christmas() {
   execute('altColors', {
     'ms': 300,
-    'firstColor': {'r': 0,'g': 255,'b': 0},
-    'secondColor': {'r': 255,'g': 13,'b': 13}
+    'firstColor': {
+      'r': 0,
+      'g': 255,
+      'b': 0
+    },
+    'secondColor': {
+      'r': 255,
+      'g': 13,
+      'b': 13
+    }
   })
 }
 
-function setStripToColor(color) {
-  execute('setSegment', {
-    "segment_of_leds": Array.from(Array(num_leds).keys()),
+function setStrip(color) {
+  execute('setStrip', {
     "color": color
   })
 }

@@ -125,7 +125,7 @@
 from uPixels import uPixels
 
 pixels = uPixels(4, 30) # init a μPixels object using Pin 4 and controlling a LED strip with 30 LEDS
-pixels.startServer() # start the server that hosts the UI on port 8000
+pixels.start_server() # start the server that hosts the UI on port 8000
 ```
 
 #### Example application using Animations API:
@@ -138,7 +138,7 @@ pixels = uPixels(4, 30) # init a μPixels object on Pin 4 that is controlling a 
 for i in range(3):
     pixels.chase(ms=40, color=(100, 0, 0), direction='right') # do a chase animation three times with delay of 40ms, red color, going right.
 
-pixels.randomFill(ms=150, color=None) # random fill animation with 150ms delay and random colors
+pixels.random_fill(ms=150, color=None) # random fill animation with 150ms delay and random colors
 ```
 
 #### See the docs below for usage of all the μPixels animations!
@@ -147,7 +147,7 @@ pixels.randomFill(ms=150, color=None) # random fill animation with 150ms delay a
 
 ## REST API Reference
 
-After running `uPixels.startServer()`, the following routes will be available at the address and port set when uPixels was initialized(Default: 0.0.0.0:8000).
+After running `uPixels.start_server()`, the following routes will be available at the address and port set when uPixels was initialized(Default: 0.0.0.0:8000).
 
 ### `GET /`
 
@@ -158,13 +158,13 @@ After running `uPixels.startServer()`, the following routes will be available at
 ### `POST /execute`
 
 - Run animations from the Animations API and other methods via a POST request to this route from any device connected on the same network as your microcontroller.
-- All animations from the Animations API can be called from here as well as the `setStrip`, `setSegment`, and `clear` methods.
+- All animations from the Animations API can be called from here as well as the `set_strip`, `set_segment`, and `clear` methods.
 - BEWARE of infinite loop animations. Once you start them, they can't be stopped unless you do a hard reset!
   
 #### *Parameters*
 - This route takes a JSON body with an `action` and `params` to be passed to the `action`
 - *Required:*
-  - `action` - (string) name of function/animation to be run(name must be same as method names in documentation)
+  - `action` - (string) name of function/animation to be run (name must be camel-case version of the method name in documentation)
   - `params` - (object) named params to be passed to the function(if no params, pass an empty object)
     - When color is needed, pass a `color` object with `r`, `g`, `b` values, such as
       ```JSON
@@ -176,7 +176,7 @@ After running `uPixels.startServer()`, the following routes will be available at
           "b": 100,
         }
       }
-    - NOTE: For the `altColors` animation, pass a `firstColor` and `secondColor` object
+    - NOTE: For the `altColors` animation, pass a `first_color` and `second_color` object
 
 *Ex: To run the `rainbow` animation(w/ params), send a JSON body like this:* 
 ```JSON
@@ -238,14 +238,14 @@ Initialize a uPixels object to control a LED strip with `num_leds` on `pin`. `Ad
 - `uPixels.address` - (str) address UI is hosted on
 - `uPixels.port` - (int) port UI is hosted on
 - `uPixels.animation_map` - (dict) mapping of animation names to their corresponding functions. Used when calling the animations from the UI.
-- `uPixels.statusLED` - (int) pin number of status LED indicator. Default: 5
+- `uPixels.status_led_pin` - (int) pin number of status LED indicator. Default: 5
 
 ----
 
 ## Server Methods
 
 
-## `uPixels.setDeviceName(name)`
+## `uPixels.set_device_name(name)`
 
   ###### Description
   Sets name of device
@@ -254,7 +254,7 @@ Initialize a uPixels object to control a LED strip with `num_leds` on `pin`. `Ad
 
 -----
 
-## `uPixels.startServer()`
+## `uPixels.start_server()`
 
 ###### Description
 Serves the UI using the uWeb server on specified address and port
@@ -276,7 +276,7 @@ Serves the UI using the uWeb server on specified address and port
 
 -----
 
-## `uPixels.setStatusLED(pin)`
+## `uPixels.set_status_led(pin)`
 
   ###### Description
   Set the pin number for the optional status LED indicator
@@ -285,7 +285,7 @@ Serves the UI using the uWeb server on specified address and port
 
 -----
 
-## `uPixels.toggleServerStatusLED(status=1)`
+## `uPixels.toggle_server_status_led(status=1)`
 
   ###### Description
   Toggle the status LED indicator
@@ -298,7 +298,7 @@ Serves the UI using the uWeb server on specified address and port
 
 -----
 
-## `uPixels.startupAnimation()`
+## `uPixels.startup_animation()`
 
   ###### Description
   Default startup animation played when uPixels is first initialized. Override this method to set a custom animation.
@@ -317,7 +317,7 @@ Serves the UI using the uWeb server on specified address and port
 
 -----
 
-## `uPixels.fillStrip(ms=25, color=None)`
+## `uPixels.fill_strip(ms=25, color=None)`
 
   ###### Description
   Fill strip animation starting from the first LED
@@ -327,7 +327,7 @@ Serves the UI using the uWeb server on specified address and port
 
 -----
 
-## `uPixels.fillFromMiddle(ms=40, color=None)`
+## `uPixels.fill_from_middle(ms=40, color=None)`
 
   ###### Description
   Fill strip animation starting from the middle of the strip
@@ -337,7 +337,7 @@ Serves the UI using the uWeb server on specified address and port
 
 -----
 
-## `uPixels.fillFromSides(ms=40, color=None)`
+## `uPixels.fill_from_sides(ms=40, color=None)`
 
   ###### Description
   Fill strip animation starting from both ends
@@ -347,7 +347,7 @@ Serves the UI using the uWeb server on specified address and port
 
 -----
 
-## `uPixels.randomFill(ms=150, color=None)`
+## `uPixels.random_fill(ms=150, color=None)`
 
   ###### Description
   Random filling of strip one LED at a time
@@ -357,14 +357,14 @@ Serves the UI using the uWeb server on specified address and port
 
 -----
 
-## `uPixels.altColors(ms=125, firstColor=None, secondColor=None)`
+## `uPixels.alternating_colors(ms=125, first_color=None, second_color=None)`
 
   ###### Description
   Alternating colors every other LED on strip
   ###### Parameters
   - ms - (int) delay time in milliseconds. Default: 125
-  - firstColor - (tuple) RGB color for first color in the format (r, g, b). Default: None (random color)
-  - secondColor - (tuple) RGB color for second color in the format (r, g, b). Default: None (random color)
+  - first_color - (tuple) RGB color for first color in the format (r, g, b). Default: None (random color)
+  - second_color - (tuple) RGB color for second color in the format (r, g, b). Default: None (random color)
 
 -----
 
@@ -378,7 +378,7 @@ Serves the UI using the uWeb server on specified address and port
 
 -----
 
-## `uPixels.rgbFade(ms=20)`
+## `uPixels.rgb_fade(ms=20)`
 
   ###### Description
   Fade of RGB values on whole strip
@@ -397,7 +397,7 @@ Serves the UI using the uWeb server on specified address and port
 
 -----
 
-## `uPixels.rainbowChase(ms=50)`
+## `uPixels.rainbow_chase(ms=50)`
 
   ###### Description
   Rainbow chase animation
@@ -435,7 +435,7 @@ Serves the UI using the uWeb server on specified address and port
 
 ## Helper Methods
 
-## `uPixels.setStrip(color=None)`
+## `uPixels.set_strip(color=None)`
 
   ###### Description
   Set entire strip to a color
@@ -444,7 +444,7 @@ Serves the UI using the uWeb server on specified address and port
 
 -----
 
-## `uPixels.setSegment(segment_of_leds, color)`
+## `uPixels.set_segment(segment_of_leds, color)`
 
   ###### Description
   Set specified segments of LEDS to a color
@@ -454,7 +454,7 @@ Serves the UI using the uWeb server on specified address and port
 
 -----
 
-## `uPixels.randInt(lower, upper)`
+## `uPixels.rand_int(lower, upper)`
 
   ###### Description
   Returns a random number between lower and upper(not including upper)
@@ -466,7 +466,7 @@ Serves the UI using the uWeb server on specified address and port
 
 -----
 
-## `uPixels.randColor()`
+## `uPixels.rand_color()`
 
   ###### Description
   Return a random RGB tuple

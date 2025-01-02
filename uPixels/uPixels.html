@@ -24,16 +24,70 @@
   <link rel="shortcut icon" href="https://raw.githubusercontent.com/petabite/uPixels/master/images/favicon.ico">
   <meta name="apple-mobile-web-app-status-bar-style" content="translucent black">
   <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' />
+  <script id="schedules-data" type="application/json">
+    {{schedules}}
+  </script>
 </head>
 
 <body>
   <div class="navbar-fixed">
     <nav class="teal lighten-1">
       <div class="nav-wrapper">
-        <a class="brand-logo center" id="u-logo" onclick="location.reload()"><i
-            class="material-icons">developer_board</i>uPixels</a>
+        <a class="brand-logo center" id="u-logo" onclick="location.reload()">
+          <i class="material-icons">developer_board</i>uPixels
+        </a>
+        <ul id="nav-mobile" class="right">
+          <li><a class="modal-trigger" href="#system-settings"><i class="material-icons left">settings</i></a></li>
+        </ul>
       </div>
     </nav>
+  </div>
+
+  <div id="system-settings" class="modal">
+    <div class="modal-content">
+      <h4>Settings</h4>
+      <form class="col s12">
+        <div class="row">
+          <div class="input-field col s6">
+            <input id="device-name" type="text" value="{{name}}">
+            <label for="device-name">Device Name</label>
+          </div>
+        </div>
+        <h5>Schedules</h5>
+        <div id="schedules">
+          <div id="schedule-template" style="display: none;">
+            <div class="row">
+              <div class="col s10">
+                <h6 id="name">Schedule 1</h6>
+              </div>
+              <div class="col s2">
+                <a class="btn-floating btn-small waves-effect waves-light red" id="delete-btn"><i
+                    class="material-icons left">delete</i></a>
+              </div>
+            </div>
+            <div class="col">
+              <div class="input-field">
+                <input type="time" id="time-input">
+                <label for="time-input">Scheduled Time (every day)</label>
+              </div>
+              <div class="input-field">
+                <textarea class="materialize-textarea" id="action-input"></textarea>
+                <label for="action-input">Action (e.g. rainbow)</label>
+              </div>
+              <div class="input-field">
+                <textarea class="materialize-textarea" id="params-input"></textarea>
+                <label for="params-input">Params (e.g. {"ms": 10, "iterations": 1})</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a class="waves-effect waves-teal btn-flat" id="add-schedule-btn"><i class="material-icons left">add</i>add
+          schedule</a>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect waves-green btn-flat" id="save-settings-btn">save</a>
+    </div>
   </div>
 
   <div class="controls row center-align z-depth-3">
@@ -242,8 +296,8 @@
       </div>
       <h6 class="center-align">Set strip to color picker selection:</h6>
       <div class="buttons center-align">
-        <a class="btn-floating btn-large waves-effect waves-light blue"
-          onclick="setStripToColor(getColorSelection());"><i class="material-icons">play_arrow</i></a>
+        <a class="btn-floating btn-large waves-effect waves-light blue" onclick="setStrip(getColorSelection());"><i
+            class="material-icons">play_arrow</i></a>
       </div>
     </div>
   </div>
@@ -277,6 +331,11 @@
         </tr>
       </tbody>
     </table>
+
+    <div class="center-align" id="reset-button">
+      <a class="waves-effect waves-light btn-small red clear " onclick="reset();"><i
+          class="material-icons left">power_settings_new</i>reset board</a>
+    </div>
 
     <h5>Credits</h5>
     <ul>

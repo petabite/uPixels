@@ -1,4 +1,7 @@
+const MP_WEBREPL_PASSWORD = 'nodemcu'
 var brightnessSlider, delaySlider, startingPositionSlider, segmentLengthSlider
+var schedulesContainer;
+
 $(document).ready(function () {
   $("#colorpicker").spectrum({
     color: "rgb(0, 255, 155)",
@@ -30,11 +33,6 @@ $(document).ready(function () {
       setStrip(color)
     })
   })
-
-  M.AutoInit();
-  $('.tabs').tabs({
-    'swipeable': true
-  });
 
   delaySlider = document.getElementById('delay-slider');
   noUiSlider.create(delaySlider, {
@@ -75,7 +73,80 @@ $(document).ready(function () {
   $('#u-logo').on('click touchstart', function () {
     location.reload()
   })
+
+  // Init Schedules UI
+
+  schedules = JSON.parse($("#schedules-data").text())
+  schedulesContainer = $('#schedules');
+  scheduleTemplate = $('#schedule-template');
+  schedules.forEach(({time, action, params}, index) => {
+    schedule = scheduleTemplate.clone(true)
+    schedule.find('#name').text(`Schedule ${index + 1}`);
+    schedule.find('#time-input').val(secondsToTimeString(time));
+    schedule.find('#action-input').val(action);
+    schedule.find('#params-input').val(JSON.stringify(params));
+    schedule.appendTo(schedulesContainer)
+    schedule.removeAttr('id')
+    schedule.addClass('schedule');
+    schedule.show();
+  });
+
+  addScheduleBtn = $('#add-schedule-btn');
+  addScheduleBtn.on('click', function() {
+    schedule = scheduleTemplate.clone(true)
+    schedule.find('#name').text(`Schedule ${schedulesContainer.children().length }`);
+    schedule.appendTo(schedulesContainer)
+    schedule.removeAttr('id')
+    schedule.addClass('schedule');
+    schedule.show();
+  })
+
+  schedulesContainer.on('click', '#delete-btn', function() {
+    $(this).closest('.schedule').remove();
+  });
+
+  saveSettingsBtn = $('#save-settings-btn');
+  saveSettingsBtn.on('click', saveSettings);
+
+  M.AutoInit();
+  M.updateTextFields();
+  $('.tabs').tabs({
+    'swipeable': true
+  });
 });
+
+// UI Helpers
+
+const SEC_IN_HOUR = 3600;
+const SEC_IN_MIN = 60;
+
+function secondsToTimeString(seconds) {
+  hours = Math.floor(seconds / SEC_IN_HOUR);
+  minutes = Math.floor((seconds % SEC_IN_HOUR) / SEC_IN_MIN);
+  hours = hours < 10 ? '0' + hours : hours;
+  minutes = minutes < 10 ? '0' + minutes : minutes;
+  return `${hours}:${minutes}`;
+}
+
+function timeStringToSeconds(timeString) {
+  const [hours, minutes] = timeString.split(':').map(Number);
+  return (hours * SEC_IN_HOUR) + (minutes * SEC_IN_MIN);
+}
+
+function saveSettings() {
+  schedulesList = schedulesContainer.find('.schedule').map(function() {
+      time = $(this).find('#time-input').val();
+      action = $(this).find('#action-input').val();
+      params = $(this).find('#params-input').val();
+      return {
+        time: timeStringToSeconds(time),
+        action,
+        params: JSON.parse(params)
+      }
+    }
+  ).toArray();
+  updateSchedules(schedulesList)
+}
 
 function changeVal(element, val) {
   $(element).val(+$(element).val() + val);
@@ -132,6 +203,8 @@ function getDelaySelection() {
   }
 }
 
+// API Helpers
+
 function execute(action, params = {}) {
   var xhr = new XMLHttpRequest();
   xhr.open("POST", '/execute', true);
@@ -141,6 +214,24 @@ function execute(action, params = {}) {
     'params': params
   }));
 }
+
+function reset() {
+  ws = new WebSocket('ws://' + '192.168.200.161' + ':8266')
+  ws.addEventListener('open', function () {
+    ws.send(MP_WEBREPL_PASSWORD + '\r')
+    ws.send('')
+    ws.send('import machine;machine.reset()\r')
+  })
+}
+
+function updateSchedules(schedules) {
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", '/schedules', true);
+  xhr.setRequestHeader("Content-Type", "application/json");
+  xhr.send(JSON.stringify(schedules));
+}
+
+// Animation Functions
 
 function rainbow() {
   execute('rainbow', {
@@ -216,7 +307,6 @@ function randomFill() {
 }
 
 function fillFromMiddle() {
-  color
   execute('fillFromMiddle', {
     'ms': getDelaySelection(),
     'color': getColorSelection()

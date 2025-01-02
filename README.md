@@ -311,7 +311,7 @@ Serves the UI using the uWeb server on specified address and port
   Chase animation going left or right
   ###### Parameters
   - ms - (int) delay time in milliseconds. Default: 20
-  - color - (tuple) RGB color for animation in the format (r, g, b). Default: None(random color)
+  - color - (tuple) RGB color for animation in the format (r, g, b). Default: None (random color)
   - segment_length - (int) number of LEDs to be used. Default: 5
   - direction - (str) direction of animation; 'left' or 'right'. Default: 'right'
 
@@ -323,7 +323,7 @@ Serves the UI using the uWeb server on specified address and port
   Fill strip animation starting from the first LED
   ###### Parameters
   - ms - (int) delay time in milliseconds. Default: 25
-  - color - (tuple) RGB color for animation in the format (r, g, b). Default: None(random color)
+  - color - (tuple) RGB color for animation in the format (r, g, b). Default: None (random color)
 
 -----
 
@@ -333,7 +333,7 @@ Serves the UI using the uWeb server on specified address and port
   Fill strip animation starting from the middle of the strip
   ###### Parameters
   - ms - (int) delay time in milliseconds. Default: 40
-  - color - (tuple) RGB color for animation in the format (r, g, b). Default: None(random color)
+  - color - (tuple) RGB color for animation in the format (r, g, b). Default: None (random color)
 
 -----
 
@@ -343,7 +343,7 @@ Serves the UI using the uWeb server on specified address and port
   Fill strip animation starting from both ends
   ###### Parameters
   - ms - (int) delay time in milliseconds. Default: 40
-  - color - (tuple) RGB color for animation in the format (r, g, b). Default: None(random color)
+  - color - (tuple) RGB color for animation in the format (r, g, b). Default: None (random color)
 
 -----
 
@@ -353,7 +353,7 @@ Serves the UI using the uWeb server on specified address and port
   Random filling of strip one LED at a time
   ###### Parameters
   - ms - (int) delay time in milliseconds. Default: 150
-  - color - (tuple) RGB color for animation in the format (r, g, b). Default: None(random color)
+  - color - (tuple) RGB color for animation in the format (r, g, b). Default: None (random color)
 
 -----
 
@@ -363,18 +363,18 @@ Serves the UI using the uWeb server on specified address and port
   Alternating colors every other LED on strip
   ###### Parameters
   - ms - (int) delay time in milliseconds. Default: 125
-  - firstColor - (tuple) RGB color for first color in the format (r, g, b). Default: None(random color)
-  - secondColor - (tuple) RGB color for second color in the format (r, g, b). Default: None(random color)
+  - firstColor - (tuple) RGB color for first color in the format (r, g, b). Default: None (random color)
+  - secondColor - (tuple) RGB color for second color in the format (r, g, b). Default: None (random color)
 
 -----
 
-## `uPixels.bounce(ms=20, color=False)`
+## `uPixels.bounce(ms=20, color=None)`
 
   ###### Description
   Bouncing animation of one LED from left to right and back
   ###### Parameters
   - ms - (int) delay time in milliseconds. Default: 20
-  - color - (tuple) RGB color for animation in the format (r, g, b). Default: False(random color)
+  - color - (tuple) RGB color for animation in the format (r, g, b). Default: None (random color)
 
 -----
 
@@ -412,7 +412,7 @@ Serves the UI using the uWeb server on specified address and port
   Wipe animation
   ###### Parameters
   - ms - (int) delay time in milliseconds. Default: 20
-  - color - (tuple) RGB color for animation in the format (r, g, b). Default: None(random color)
+  - color - (tuple) RGB color for animation in the format (r, g, b). Default: None (random color)
 
 -----
 
@@ -422,7 +422,7 @@ Serves the UI using the uWeb server on specified address and port
   Sparkle animation
   ###### Parameters
   - ms - (int) delay time in milliseconds. Default: 10
-  - color - (tuple) RGB color for animation in the format (r, g, b). Default: None(random color)
+  - color - (tuple) RGB color for animation in the format (r, g, b). Default: None (random color)
 
 -----
 
@@ -435,12 +435,12 @@ Serves the UI using the uWeb server on specified address and port
 
 ## Helper Methods
 
-## `uPixels.setStrip(color)`
+## `uPixels.setStrip(color=None)`
 
   ###### Description
   Set entire strip to a color
   ###### Parameters
-  - color - (tuple) RGB color in the format (r, g, b).
+  - color - (tuple) RGB color in the format (r, g, b). Default: None (random color)
 
 -----
 

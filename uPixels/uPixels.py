@@ -1,12 +1,26 @@
-import machine, uos, network, neopixel, time, urandom, sys
+import time
+import random
+import sys
+import json
+import os
+
+import machine
+import network
+import neopixel
+import ntptime
+import mcron
 from uWeb import uWeb, loadJSON
 
-
 class uPixels:
-    VERSION = "2.0"
+    VERSION = "3.0"
+    CONFIG_FILE_PATH = "uPixels.config"
+    INITIAL_CONFIG =  {
+        "device_name":  os.uname()[0],
+        "schedules": []
+    }
 
     def __init__(self, pin, num_leds, address="0.0.0.0", port=8000):
-        self.device_name = uos.uname()[0]
+        self.config = {}
         self.pin = machine.Pin(pin, machine.Pin.OUT)  # configure pin for leds
         self.np = neopixel.NeoPixel(self.pin, num_leds)  # configure neopixel library
         self.address = address
@@ -29,25 +43,80 @@ class uPixels:
             "clear": self.clear,
         }
         self.statusLED = 5
+        self.loadConfig()
+        self.init_schedule()
         self.startupAnimation()
+        
+    # config methods
 
     def setDeviceName(self, name):
-        self.device_name = name
+        self.config["device_name"] = name
+        self.saveConfig()
+
+    def setSchedules(self, schedules):
+        self.config["schedules"] = schedules
+        self.saveConfig()
+        self.init_schedule()
+
+    def saveConfig(self):
+        with open(self.CONFIG_FILE_PATH, 'w', encoding='utf-8') as f:
+            config_string = json.dumps(self.config)
+            f.write(config_string)
+
+    def loadConfig(self):
+        try:
+            with open(self.CONFIG_FILE_PATH, 'r', encoding='utf-8') as f:
+                self.config = json.loads(f.read())
+        except OSError:
+            self.config = self.INITIAL_CONFIG
+            self.saveConfig()
+
+    # schedule methods
+    def init_schedule(self):
+        mcron.init_timer()
+        mcron.remove_all()
+
+        # sync time 4x a day
+        mcron.insert(
+            mcron.PERIOD_DAY,
+            range(0, mcron.PERIOD_DAY, mcron.PERIOD_DAY // 4),
+            "sync_time",
+            self.sync_time,
+        )
+
+        for index, schedule in enumerate(self.config["schedules"]):
+            mcron.insert(
+            mcron.PERIOD_DAY,
+            {schedule["time"]},
+            "schedule_" + str(index),
+            self.scheduled_action_handler(schedule),
+            )
+
+    def scheduled_action_handler(self, schedule):
+        return lambda _callback_id, _current_time, _callback_memory: self.do_action(schedule['action'], schedule['params'])
+    
+    def sync_time(self, _callback_id, _current_time, _callback_memory):
+        ntptime.settime()
 
     # web server methods
     def startServer(self):
         self.server = uWeb(self.address, self.port)
         self.server.routes(
-            {(uWeb.GET, "/"): self.app, (uWeb.POST, "/execute"): self.execute}
+            {
+                (uWeb.GET, "/"): self.app,
+                (uWeb.POST, "/execute"): self.execute,
+                (uWeb.POST, "/schedules"): self.update_schedules,
+            }
         )
         self.toggleServerStatusLED()
         self.server.start()
 
     def app(self):
         vars = {
-            "name": self.device_name,
+            "name": self.config["device_name"],
+            "schedules": json.dumps(self.config["schedules"]),
             "upixels_ver": self.VERSION,
-            "mp_ver": uos.uname()[3],
+            "mp_ver": os.uname()[3],
             "ip": network.WLAN(network.STA_IF).ifconfig()[0],
             "host": network.WLAN(network.STA_IF).ifconfig()[0]
             + ":"
@@ -65,33 +134,40 @@ class uPixels:
                 self.server.sendStatus(self.server.BAD_REQUEST)
                 self.server.sendBody(b"%s is not a valid action!" % (action))
                 return
-            if "color" in params.keys():
-                if params["color"] != None:
-                    params["color"] = (
-                        params["color"]["r"],
-                        params["color"]["g"],
-                        params["color"]["b"],
-                    )
-            if "firstColor" in params.keys():
-                if params["firstColor"] != None:
-                    params["firstColor"] = (
-                        params["firstColor"]["r"],
-                        params["firstColor"]["g"],
-                        params["firstColor"]["b"],
-                    )
-            if "secondColor" in params.keys():
-                if params["secondColor"] != None:
-                    params["secondColor"] = (
-                        params["secondColor"]["r"],
-                        params["secondColor"]["g"],
-                        params["secondColor"]["b"],
-                    )
             self.server.sendStatus(self.server.OK)
-            self.animation_map[action](**params)  # call the animation method
+            self.do_action(action, params)
         except Exception as e:
             self.server.sendStatus(self.server.BAD_REQUEST)
             self.server.sendBody(b"An error occurred: %s!" % (str(e)))
             sys.print_exception(e)
+    
+    def update_schedules(self):
+        schedules = loadJSON(self.server.request_body)
+        self.setSchedules(schedules)
+
+    def do_action(self, action, params={}):
+        if "color" in params.keys():
+            if params["color"] is not None:
+                params["color"] = (
+                    params["color"]["r"],
+                    params["color"]["g"],
+                    params["color"]["b"],
+                )
+        if "firstColor" in params.keys():
+            if params["firstColor"] is not None:
+                params["firstColor"] = (
+                    params["firstColor"]["r"],
+                    params["firstColor"]["g"],
+                    params["firstColor"]["b"],
+                )
+        if "secondColor" in params.keys():
+            if params["secondColor"] is not None:
+                params["secondColor"] = (
+                    params["secondColor"]["r"],
+                    params["secondColor"]["g"],
+                    params["secondColor"]["b"],
+                )
+        self.animation_map[action](**params)  # call the animation method
 
     def setStatusLED(self, pin):
         self.statusLED = pin
@@ -205,9 +281,9 @@ class uPixels:
             self.np.write()
             time.sleep_ms(ms)
 
-    def bounce(self, ms=20, color=False):
+    def bounce(self, ms=20, color=None):
         while True:
-            if color == False:
+            if color == None:
                 self.chase(ms=ms, color=self.randColor(), direction="right")
                 self.chase(ms=ms, color=self.randColor(), direction="left")
             else:
@@ -287,7 +363,7 @@ class uPixels:
         self.np.write()
 
     def randInt(self, lower, upper):
-        randomNum = urandom.getrandbits(len(bin(upper)[2:])) + lower
+        randomNum = random.getrandbits(len(bin(upper)[2:])) + lower
         if randomNum < upper:
             return randomNum
         else:

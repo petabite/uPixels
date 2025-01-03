@@ -78,13 +78,9 @@
 - More info on materials: [Adafruit](https://learn.adafruit.com/adafruit-neopixel-uberguide), [Sparkfun](https://learn.sparkfun.com/tutorials/ws2812-breakout-hookup-guide/all)
 
 ## Dependencies
+- MicroPython v1.24 or later (may work on earlier versions but not tested)
 - uWeb (get it from my repo [here](https://github.com/petabite/uWeb))
-    ### MicroPython Libraries:
-    - neopixel
-    - uos
-    - urandom
-    - ujson
-    - usocket
+- MicroCRON (get it from fizista's repo [here](https://github.com/fizista/micropython-mcron))
 
 ## Schematic
 
@@ -103,19 +99,27 @@
 
 
 ## Setup
-1. Install MicroPython on your board if you have not already ([ESP8266 installation](http://docs.micropython.org/en/latest/esp8266/tutorial/intro.html#intro))
+1. Install MicroPython v1.24 or later on your board if you have not already ([ESP8266 installation](http://docs.micropython.org/en/latest/esp8266/tutorial/intro.html#intro))
 1. Install μWeb by following the INSTALLATION instructions on my [repo](https://github.com/petabite/uWeb#installation).
-1. Head over to the releases tab on this repo. Download the source code for the latest version. Copy the μPixels project files to your board using the same method you used to copy the μWeb files. Make sure that you have transferred:
+2. Install MicroCRON. In a REPL session, run the following:
+    ```python
+    import mip
+    mip.install('github:fizista/micropython-mcron/mcron/__init__.py', target='mcron')
+    ```
+3. Head over to the releases tab on this repo. Download the source code for the latest version. Copy the μPixels project files to your board using the same method you used to copy the μWeb files. Make sure that you have transferred:
     - uPixels.css
     - uPixels.html
     - uPixels.js
-    - uPixels.py
-1. Construct the circuit [above](#schematic) (or a variation of it, depending on your board). You may also follow these hookup guides: [Adafruit](https://learn.adafruit.com/adafruit-neopixel-uberguide), [Sparkfun](https://learn.sparkfun.com/tutorials/ws2812-breakout-hookup-guide/all)
-1. Check out the [Quick Start](#quick-start) section for examples.
-1. Make sure you also have a boot.py for the initial setup of your board(ie: connecting to wifi) and main.py for the μPixels code.
-1. Power up your board.
-1. Navigate to your board's IP address on port 8000 using a web browser to access the UI(Ex: 192.168.100.48:8000)
-1. Enjoy the light show!
+    - uPixels.mpy
+
+    *NOTE:* If you are running a different version of MicroPython, you may need to compile a version of uPixels.mpy that works with your version of MicroPython using [`mpy-cross`](https://github.com/micropython/micropython/tree/master/mpy-cross). See [MicroPython .mpy files docs](https://docs.micropython.org/en/latest/reference/mpyfiles.html).
+
+4. Construct the circuit [above](#schematic) (or a variation of it, depending on your board). You may also follow these hookup guides: [Adafruit](https://learn.adafruit.com/adafruit-neopixel-uberguide), [Sparkfun](https://learn.sparkfun.com/tutorials/ws2812-breakout-hookup-guide/all)
+5. Check out the [Quick Start](#quick-start) section for examples.
+6. Make sure you also have a boot.py for the initial setup of your board(ie: connecting to wifi) and main.py for the μPixels code.
+7. Power up your board.
+8. Navigate to your board's IP address on port 8000 using a web browser to access the UI(Ex: 192.168.100.48:8000)
+9. Enjoy the light show!
 
 ## Quick Start
 
@@ -214,6 +218,40 @@ After running `uPixels.start_server()`, the following routes will be available a
 #### *Response*
 - On success, the response will have a `200` status with no body.
 - On error, the response will have a `400` status and will return an error message. Check the MicroPython WebREPL for a more detailed error message!
+
+### `POST /schedules`
+- Schedule animations to run at a specific time of day
+  
+#### *Parameters*
+- This route takes a JSON body with an array of objects containing `time`, `action`, and `params` representing the time of day to run the animation (in seconds from midnight UTC), the animation to run, and the parameters to pass to the animation.
+
+*Ex: To run `setStrip` at 1:30 AM UTC and `clear` at 7:00 AM UTC, send a JSON body like this:* 
+
+```JSON
+[
+  {
+    "time": 5400,
+    "action": "setStrip",
+    "params": {
+      "color": {
+        "r": 255,
+        "g": 108,
+        "b": 8
+      }
+    }
+  },
+  {
+    "time": 25200,
+    "action": "clear",
+    "params": {}
+  }
+]
+```
+
+**NOTE:** 1:30 AM = $1 \times (60*60) + 30 \times 60 = 5400$ and 7:00 AM = $7 \times (60*60) = 25200$
+
+#### *Response*
+- On success, the response will have a `200` status with no body.
 
 ## Documentation
 
@@ -503,4 +541,5 @@ Serves the UI using the uWeb server on specified address and port
 - noUiSlider.js
 - MicroPython
 - jQuery
-- jgarff - rpi_ws281x
+- jgarff - [rpi_ws281x](https://github.com/jgarff/rpi_ws281x)
+- fizista - [MicroCRON](https://github.com/fizista/micropython-mcron)

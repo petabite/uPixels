@@ -143,30 +143,32 @@ class uPixels:
     def update_schedules(self):
         schedules = loadJSON(self.server.request_body)
         self.set_schedules(schedules)
+        self.server.sendStatus(self.server.OK)
 
     def do_action(self, action, params={}):
+        args = {}
         if "color" in params.keys():
             if params["color"] is not None:
-                params["color"] = (
+                args["color"] = (
                     params["color"]["r"],
                     params["color"]["g"],
                     params["color"]["b"],
                 )
         if "firstColor" in params.keys():
             if params["firstColor"] is not None:
-                params["firstColor"] = (
+                args["first_color"] = (
                     params["firstColor"]["r"],
                     params["firstColor"]["g"],
                     params["firstColor"]["b"],
                 )
         if "secondColor" in params.keys():
             if params["secondColor"] is not None:
-                params["secondColor"] = (
+                args["second_color"] = (
                     params["secondColor"]["r"],
                     params["secondColor"]["g"],
                     params["secondColor"]["b"],
                 )
-        self.animation_map[action](**params)  # call the animation method
+        self.animation_map[action](**args)  # call the animation method
 
     def set_status_led(self, pin):
         self.status_led_pin = pin

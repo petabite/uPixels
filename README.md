@@ -248,7 +248,7 @@ After running `uPixels.start_server()`, the following routes will be available a
 ]
 ```
 
-**NOTE:** 1:30 AM = $1 \times (60*60) + 30 \times 60 = 5400$ and 7:00 AM = $7 \times (60*60) = 25200$
+**NOTE:** 1:30 AM = $` 1 \times (60 \times 60) + 30 \times 60 = 5400 `$ and 7:00 AM = $` 7 \times (60 \times 60) = 25200 `$
 
 #### *Response*
 - On success, the response will have a `200` status with no body.
